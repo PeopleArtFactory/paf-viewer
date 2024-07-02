@@ -59,6 +59,5 @@ GalleryScene.instance.createRoom(galleryDataFile);
 ## Acknowledgements
 
 Proud to be with the best people on Earth.
-
  - [Three.js](https://threejs.org/)
 
