@@ -1,0 +1,735 @@
+{
+    "id": "D2hwWzg46QMjfFz8GD9F",
+    "alias": "pafeducacion",
+    "name": "La etapa azul de Picasso",
+    "synopsis": "Este período, caracterizado por el uso del color azul, comienza a finales de 1901 y se extiende hasta el año 1904. Durante esta época Picasso residía en Barcelona y París. Picasso pinta escenas de los bajos fondos y de la bohemia parisina.",
+    "description": "En la época en que Picasso se trasladó a vivir a París, correspondiente al denominado \"Período Azul\" (1902-1904) surgieron de la mano del artista una serie de obras en las que se advierte una atmósfera irrespirable. Ello se debe a que la mayoría de los personajes representados muestran a través de su aspecto su terrible estado, tanto desde un punto de vista emocional como físico. En su mayoría se trata de escenas, como ésta, protagonizadas por mendigos, prostitutas, personas enfermas y, en general, seres marginados de la sociedad. Es muy probable que en esa época Picasso se sintiera terriblemente solo y angustiado en un París que para él resultaba, en aquellos tiempos, inhóspito.\n\nLa gama cromática empleada por Picasso se restinge a las tonalidades ricas y cambiantes de los azules, aunque el artista no desdeña incluir ciertos tonos de beis y de rosa pálido que preludian las composiciones algo posteriores del llamado \"Período Rosa\".",
+    "dateCreated": null,
+    "dateUpdated": "2024-07-02T18:36:51.450Z",
+    "galleryTags": [
+        "azul",
+        "Casagemas",
+        "Picasso"
+    ],
+    "links": [
+        ""
+    ],
+    "room": {
+        "ceiling": {
+            "color": "#415057"
+        },
+        "floor": {
+            "color": "#858587"
+        },
+        "lights": {
+            "ambientLight": {
+                "color": "#ffffff",
+                "intensity": 1
+            },
+            "spotLights": [
+                {
+                    "color": "#ffffff",
+                    "intensity": 5,
+                    "distance": 500,
+                    "angle": 0.65,
+                    "penumbra": 0.3,
+                    "decay": 0.15
+                }
+            ]
+        },
+        "walls": [
+            {
+                "position": [
+                    0,
+                    0,
+                    0
+                ],
+                "size": [
+                    580,
+                    250,
+                    0.1
+                ],
+                "angle": 1.5707963267948966,
+                "color": "#0a1c38",
+                "backgroundImageId": "8ec0c4fc-2681-4c32-a28d-cb7a5341b938",
+                "audioId": "455f9d3e-93d3-43c4-986d-c8ae8931d820",
+                "contents": []
+            },
+            {
+                "position": [
+                    0,
+                    0,
+                    -580
+                ],
+                "size": [
+                    520,
+                    250,
+                    0.1
+                ],
+                "angle": 0,
+                "color": "#0a1c38",
+                "backgroundImageId": null,
+                "audioId": "14dfb809-3c94-436c-873d-821cada0ad2f",
+                "contents": [
+                    {
+                        "resourceId": "02bedf9f-32f0-4f67-81dc-b6236f46c801",
+                        "position": [
+                            207,
+                            50,
+                            2
+                        ],
+                        "size": [
+                            105,
+                            148,
+                            1
+                        ],
+                        "frameIndex": 0,
+                        "spotLight": {
+                            "spotLightIndex": 0,
+                            "position": [
+                                207,
+                                200,
+                                -10
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "position": [
+                    520,
+                    0,
+                    -580
+                ],
+                "size": [
+                    960,
+                    250,
+                    0.1
+                ],
+                "angle": 4.71238898038469,
+                "color": "#0a1c38",
+                "backgroundImageId": null,
+                "audioId": "20441fea-c6d5-40ea-b5eb-9bb6145e06cc",
+                "contents": [
+                    {
+                        "resourceId": "83549e80-9489-4e31-b786-38bf13775757",
+                        "position": [
+                            306,
+                            34,
+                            2
+                        ],
+                        "size": [
+                            117,
+                            179,
+                            1
+                        ],
+                        "frameIndex": 0,
+                        "spotLight": {
+                            "spotLightIndex": 0,
+                            "position": [
+                                306,
+                                200,
+                                -10
+                            ]
+                        }
+                    },
+                    {
+                        "resourceId": "604ed625-ca9d-49f5-9879-cb3fb7a17716",
+                        "position": [
+                            540,
+                            36,
+                            2
+                        ],
+                        "size": [
+                            315,
+                            177,
+                            1
+                        ],
+                        "frameIndex": 0,
+                        "spotLight": {
+                            "spotLightIndex": 0,
+                            "position": [
+                                540,
+                                200,
+                                -10
+                            ]
+                        },
+                        "isVideo": true
+                    }
+                ]
+            },
+            {
+                "position": [
+                    520,
+                    0,
+                    380
+                ],
+                "size": [
+                    400,
+                    250,
+                    0.1
+                ],
+                "angle": 3.141592653589793,
+                "color": "#0a1c38",
+                "backgroundImageId": null,
+                "audioId": "446f4cf1-6ec9-4b2d-a28b-4d21849f2352",
+                "contents": [
+                    {
+                        "resourceId": "0dba4c59-ab57-4956-8fc3-7280542039a4",
+                        "position": [
+                            154,
+                            56,
+                            2
+                        ],
+                        "size": [
+                            91,
+                            138,
+                            1
+                        ],
+                        "frameIndex": "0",
+                        "spotLight": {
+                            "spotLightIndex": 0,
+                            "position": [
+                                154,
+                                200,
+                                -10
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "position": [
+                    120,
+                    0,
+                    380
+                ],
+                "size": [
+                    290,
+                    250,
+                    0.1
+                ],
+                "angle": 4.71238898038469,
+                "color": "#0a1c38",
+                "backgroundImageId": null,
+                "audioId": "182b3edc-8b96-46c5-a7f2-050217b2bd6d",
+                "contents": [
+                    {
+                        "resourceId": "53d32daf-c4d6-4735-8a9d-64e3f2a81de9",
+                        "position": [
+                            107,
+                            53,
+                            2
+                        ],
+                        "size": [
+                            76,
+                            120,
+                            1
+                        ],
+                        "frameIndex": "0",
+                        "spotLight": {
+                            "spotLightIndex": 0,
+                            "position": [
+                                107,
+                                200,
+                                -10
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "position": [
+                    120,
+                    0,
+                    670
+                ],
+                "size": [
+                    440,
+                    250,
+                    0.1
+                ],
+                "angle": 3.141592653589793,
+                "color": "#0a1c38",
+                "backgroundImageId": null,
+                "audioId": "da3ad125-ff19-477a-a0d3-87384aac44fc",
+                "contents": [
+                    {
+                        "resourceId": "9fb20064-47cf-40bc-8649-183752a592cc",
+                        "position": [
+                            159,
+                            39,
+                            2
+                        ],
+                        "size": [
+                            92,
+                            150,
+                            1
+                        ],
+                        "frameIndex": "0",
+                        "spotLight": {
+                            "spotLightIndex": 0,
+                            "position": [
+                                159,
+                                200,
+                                -10
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "position": [
+                    -320,
+                    0,
+                    670
+                ],
+                "size": [
+                    670,
+                    250,
+                    0.1
+                ],
+                "angle": 1.5707963267948966,
+                "color": "#0a1c38",
+                "backgroundImageId": null,
+                "audioId": "bd3ab2a2-a7ce-4340-acfd-d0762555602e",
+                "contents": [
+                    {
+                        "resourceId": "4b7ddbb5-ec6c-41f4-8c20-68d63e5afecb",
+                        "position": [
+                            284,
+                            46,
+                            2
+                        ],
+                        "size": [
+                            101,
+                            157,
+                            1
+                        ],
+                        "frameIndex": "0",
+                        "spotLight": {
+                            "spotLightIndex": 0,
+                            "position": [
+                                284,
+                                200,
+                                -10
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "position": [
+                    -320,
+                    0,
+                    0
+                ],
+                "size": [
+                    320,
+                    250,
+                    0.1
+                ],
+                "angle": 0,
+                "color": "#0a1c38",
+                "backgroundImageId": null,
+                "audioId": "256ed620-1d9a-4952-9a0b-19b7fe4f6a24",
+                "contents": [
+                    {
+                        "resourceId": "54bcd9ac-adcb-4e12-98cc-993724d2c1d7",
+                        "position": [
+                            122,
+                            75,
+                            2
+                        ],
+                        "size": [
+                            76,
+                            100,
+                            1
+                        ],
+                        "frameIndex": "0",
+                        "spotLight": {
+                            "spotLightIndex": 0,
+                            "position": [
+                                122,
+                                200,
+                                -10
+                            ]
+                        }
+                    }
+                ]
+            }
+        ],
+        "frames": [
+            {
+                "name": "Basic+ P.Partout(15cm)",
+                "frameWidth": 20,
+                "frameDeep": 10,
+                "frameImageUrl": "",
+                "frameColor": "#0e0b0e",
+                "matWidth": 130,
+                "matColor": "white",
+                "isGlassed": true
+            },
+            {
+                "name": "Gold+P.Partout(15cm)",
+                "frameWidth": 20,
+                "frameDeep": 10,
+                "frameImageUrl": "/frames%2Fgold-1.jpg",
+                "frameColor": "transparent",
+                "matWidth": 130,
+                "matColor": "white",
+                "isGlassed": true
+            }
+        ],
+        "generalAudioId": "5fb5dbf2-ea83-4d7f-967a-a7716fd6ca08"
+    },
+    "allResources": [
+        {
+            "id": "37b7511f-5d54-49fa-b7e2-59345109f38e",
+            "type": "image",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fgallery-avatar.jpg?alt=media&token=1b0c77c3-3a3c-49cc-abe3-ec2c2fafe819",
+            "fileName": "gallery-avatar.jpg",
+            "fileSize": 53079,
+            "group": 1
+        },
+        {
+            "id": "5fb5dbf2-ea83-4d7f-967a-a7716fd6ca08",
+            "type": "audio",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198ni9i2g1vgs12g17srp4n1o79.mp3?alt=media&token=6bdf43c3-5378-4fa1-8898-b089968a62d2",
+            "fileName": "p198ni9i2g1vgs12g17srp4n1o79.mp3",
+            "fileSize": 2088727,
+            "group": 1,
+            "disabled": false,
+            "mediaPlayer": {
+                "autoplay": false,
+                "loop": false
+            },
+            "info": {
+                "hidden": false,
+                "name": "musica_baja.mp3",
+                "description": null
+            }
+        },
+        {
+            "id": "20441fea-c6d5-40ea-b5eb-9bb6145e06cc",
+            "type": "audio",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198b2g58v1sma12541j9ma7gj17m.mp3?alt=media&token=610a5947-9417-4a90-b545-692d87867307",
+            "fileName": "p198b2g58v1sma12541j9ma7gj17m.mp3",
+            "fileSize": 870592,
+            "group": 1,
+            "disabled": false,
+            "mediaPlayer": {
+                "autoplay": false,
+                "loop": false
+            },
+            "info": {
+                "hidden": false,
+                "name": "Secuencia 01_2.mp3",
+                "description": null
+            }
+        },
+        {
+            "id": "446f4cf1-6ec9-4b2d-a28b-4d21849f2352",
+            "type": "audio",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198b3ijkeksc1cacm8ml16119to.mp3?alt=media&token=358c99d6-1a3d-4bb8-9b28-8dc657c14ae3",
+            "fileName": "p198b3ijkeksc1cacm8ml16119to.mp3",
+            "fileSize": 539344,
+            "group": 1,
+            "disabled": false,
+            "mediaPlayer": {
+                "autoplay": false,
+                "loop": false
+            },
+            "info": {
+                "hidden": false,
+                "name": "Secuencia 01_3.mp3",
+                "description": null
+            }
+        },
+        {
+            "id": "182b3edc-8b96-46c5-a7f2-050217b2bd6d",
+            "type": "audio",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198b4ehmobsi1df62majq2m83q.mp3?alt=media&token=6c2d18ae-901b-4c47-aedf-0330224cae2d",
+            "fileName": "p198b4ehmobsi1df62majq2m83q.mp3",
+            "fileSize": 618579,
+            "group": 1,
+            "disabled": false,
+            "mediaPlayer": {
+                "autoplay": false,
+                "loop": false
+            },
+            "info": {
+                "hidden": false,
+                "name": "Secuencia 01_4.mp3",
+                "description": null
+            }
+        },
+        {
+            "id": "bd3ab2a2-a7ce-4340-acfd-d0762555602e",
+            "type": "audio",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198b6kq0svnp17k71r7eeu21d4h9.mp3?alt=media&token=1753c8ba-3af0-404d-9dfd-77a2b1b42f79",
+            "fileName": "p198b6kq0svnp17k71r7eeu21d4h9.mp3",
+            "fileSize": 656941,
+            "group": 1,
+            "disabled": false,
+            "mediaPlayer": {
+                "autoplay": false,
+                "loop": false
+            },
+            "info": {
+                "hidden": false,
+                "name": "Secuencia 01_8.mp3",
+                "description": null
+            }
+        },
+        {
+            "id": "256ed620-1d9a-4952-9a0b-19b7fe4f6a24",
+            "type": "audio",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198b6m0lj1cnv1s8q1gm21n5q1dh8b.mp3?alt=media&token=dcd5107e-dda4-42da-8ae5-965690ee0ec5",
+            "fileName": "p198b6m0lj1cnv1s8q1gm21n5q1dh8b.mp3",
+            "fileSize": 453443,
+            "group": 1,
+            "disabled": false,
+            "mediaPlayer": {
+                "autoplay": false,
+                "loop": false
+            },
+            "info": {
+                "hidden": false,
+                "name": "Secuencia 01_5.mp3",
+                "description": null
+            }
+        },
+        {
+            "id": "da3ad125-ff19-477a-a0d3-87384aac44fc",
+            "type": "audio",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198r5upt95jeaaq19qq1cg2brb9.mp3?alt=media&token=5f25d7e5-b3de-46e0-b674-d18521d492cd",
+            "fileName": "p198r5upt95jeaaq19qq1cg2brb9.mp3",
+            "fileSize": 793715,
+            "group": 1,
+            "disabled": false,
+            "mediaPlayer": {
+                "autoplay": false,
+                "loop": false
+            },
+            "info": {
+                "hidden": false,
+                "name": "Secuencia 01_7.mp3",
+                "description": null
+            }
+        },
+        {
+            "id": "455f9d3e-93d3-43c4-986d-c8ae8931d820",
+            "type": "audio",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198sbm15eb5f14u41b8p1tgc1hg9.mp3?alt=media&token=5a72f7ae-804c-4791-968c-2d4c835ce484",
+            "fileName": "p198sbm15eb5f14u41b8p1tgc1hg9.mp3",
+            "fileSize": 1304095,
+            "group": 1,
+            "disabled": false,
+            "mediaPlayer": {
+                "autoplay": false,
+                "loop": false
+            },
+            "info": {
+                "hidden": false,
+                "name": "Picasso 01.mp3",
+                "description": null
+            }
+        },
+        {
+            "id": "14dfb809-3c94-436c-873d-821cada0ad2f",
+            "type": "audio",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198sbmus5pjcguh1hdvg57jmbc.mp3?alt=media&token=89bbdc72-a450-4209-a369-db3cace3633c",
+            "fileName": "p198sbmus5pjcguh1hdvg57jmbc.mp3",
+            "fileSize": 870482,
+            "group": 1,
+            "disabled": false,
+            "mediaPlayer": {
+                "autoplay": false,
+                "loop": false
+            },
+            "info": {
+                "hidden": false,
+                "name": "Autorretrato 1.mp3",
+                "description": null
+            }
+        },
+        {
+            "id": "8ec0c4fc-2681-4c32-a28d-cb7a5341b938",
+            "type": "background",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198qt4ik912svruqtb1094k099.png?alt=media&token=bc0321ba-9cfb-4796-b0b4-5fd1aa7246d8",
+            "fileName": "p198qt4ik912svruqtb1094k099.png",
+            "fileSize": 82718,
+            "group": 1,
+            "disabled": false,
+            "info": {
+                "hidden": false,
+                "name": "1",
+                "description": null
+            }
+        },
+        {
+            "id": "02bedf9f-32f0-4f67-81dc-b6236f46c801",
+            "type": "image",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp1976ln5ck1rjlh071uh31lkq14rpd.jpg?alt=media&token=34f0e15f-4c2d-419d-ad8a-0700bb92b333",
+            "fileName": "p1976ln5ck1rjlh071uh31lkq14rpd.jpg",
+            "fileSize": 233866,
+            "group": "1",
+            "disabled": false,
+            "info": {
+                "hidden": false,
+                "name": "Autorretrato - 1901 Picasso",
+                "description": "<p>&Oacute;leo sobre lienzo</p>",
+                "realDimensions": {
+                    "showDimensions": true,
+                    "height": 83,
+                    "width": 60,
+                    "depth": 0
+                }
+            }
+        },
+        {
+            "id": "83549e80-9489-4e31-b786-38bf13775757",
+            "type": "image",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp19775itfm145g18lh1p371463tfi4.jpg?alt=media&token=f839bdb6-0982-44aa-9aee-a5df3b8350e0",
+            "fileName": "p19775itfm145g18lh1p371463tfi4.jpg",
+            "fileSize": 218785,
+            "group": "1",
+            "disabled": false,
+            "info": {
+                "hidden": false,
+                "name": "La vida 1903",
+                "description": null,
+                "realDimensions": {
+                    "showDimensions": true,
+                    "height": 120,
+                    "width": 78,
+                    "depth": 0
+                }
+            }
+        },
+        {
+            "id": "0dba4c59-ab57-4956-8fc3-7280542039a4",
+            "type": "image",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp19775itfm91l16d2bjq178g53.jpg?alt=media&token=c19cb695-21cd-49bb-ae02-efa6333fa797",
+            "fileName": "p19775itfm91l16d2bjq178g53.jpg",
+            "fileSize": 166885,
+            "group": "1",
+            "disabled": false,
+            "info": {
+                "hidden": false,
+                "name": "El viejo guitarrista 1903",
+                "description": null,
+                "realDimensions": {
+                    "showDimensions": true,
+                    "height": 100,
+                    "width": 66,
+                    "depth": 0
+                }
+            }
+        },
+        {
+            "id": "53d32daf-c4d6-4735-8a9d-64e3f2a81de9",
+            "type": "image",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp19775itfmfjg1mairmr1uki1lcq5.jpg?alt=media&token=f96fb335-ae99-403c-8df2-065db96a0dee",
+            "fileName": "p19775itfmfjg1mairmr1uki1lcq5.jpg",
+            "fileSize": 146449,
+            "group": "1",
+            "disabled": false,
+            "info": {
+                "hidden": false,
+                "name": "Las dos hermanas 1902",
+                "description": null,
+                "realDimensions": {
+                    "showDimensions": true,
+                    "height": 120,
+                    "width": 76,
+                    "depth": 0
+                }
+            }
+        },
+        {
+            "id": "9fb20064-47cf-40bc-8649-183752a592cc",
+            "type": "image",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198b60g3d1g7q1hbl1gc49gi18665.jpg?alt=media&token=8baf5919-be8c-4c33-9dc9-9553f1e6a068",
+            "fileName": "p198b60g3d1g7q1hbl1gc49gi18665.jpg",
+            "fileSize": 309008,
+            "group": 1,
+            "disabled": false,
+            "info": {
+                "hidden": false,
+                "name": "El entierro de Casagemas",
+                "description": "<p>&Oacute;leo</p>",
+                "realDimensions": {
+                    "showDimensions": true,
+                    "height": 150,
+                    "width": 92,
+                    "depth": 0
+                }
+            }
+        },
+        {
+            "id": "4b7ddbb5-ec6c-41f4-8c20-68d63e5afecb",
+            "type": "image",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp1976ln5cl1m221g18qml1gq8mrif.jpg?alt=media&token=df3cced0-4d19-4068-a448-76168fba4c3b",
+            "fileName": "p1976ln5cl1m221g18qml1gq8mrif.jpg",
+            "fileSize": 185962,
+            "group": "1",
+            "disabled": false,
+            "info": {
+                "hidden": false,
+                "name": "La tragedia - 1903 (Pablo Picasso)",
+                "description": "<p>&Oacute;leo</p>",
+                "realDimensions": {
+                    "showDimensions": true,
+                    "height": 105,
+                    "width": 68,
+                    "depth": 0
+                }
+            }
+        },
+        {
+            "id": "54bcd9ac-adcb-4e12-98cc-993724d2c1d7",
+            "type": "image",
+            "url": "https://firebasestorage.googleapis.com/v0/b/peopleartfty.appspot.com/o/files%2FD2hwWzg46QMjfFz8GD9F%2Fp198b4unoc1nkn1bkn13d7tamtok6.jpg?alt=media&token=6109e7f9-98b4-4379-98d6-68eba73e0987",
+            "fileName": "p198b4unoc1nkn1bkn13d7tamtok6.jpg",
+            "fileSize": 172526,
+            "group": "1",
+            "disabled": false,
+            "info": {
+                "hidden": false,
+                "name": "La Celestina",
+                "description": "<p>&Oacute;leo</p>",
+                "realDimensions": {
+                    "showDimensions": true,
+                    "height": 119,
+                    "width": 89,
+                    "depth": 0
+                }
+            }
+        },
+        {
+            "id": "604ed625-ca9d-49f5-9879-cb3fb7a17716",
+            "type": "video",
+            "url": "https://www.youtube.com/watch?v=2wmDQ1yfYO4",
+            "group": 1,
+            "disabled": true,
+            "mediaPlayer": {
+                "autoplay": false,
+                "loop": false,
+                "source": "youTube",
+                "id": "2wmDQ1yfYO4",
+                "thumbnailUrl": "https://img.youtube.com/vi/2wmDQ1yfYO4/maxresdefault.jpg"
+            },
+            "info": {
+                "hidden": false,
+                "name": "Video",
+                "description": null
+            }
+        }
+    ],
+    "options": {
+        "disableHumanRef": false,
+        "hideLogo": false
+    }
+}
