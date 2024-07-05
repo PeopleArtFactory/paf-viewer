@@ -1,7 +1,7 @@
 {
   "name": "paf-viewer",
   "description": "Open Source 3D Viewer from PeopleArtFactory.com",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "keywords": [
     "3D Viewer",
     "Virtual Gallery",
@@ -11,6 +11,14 @@
     "Open Source",
     "Three.js"
   ],
+  "homepage": "https://PeopleArtFactory.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PeopleArtFactory/paf-viewer-lib"
+  },
+  "bugs": {
+    "url": "https://github.com/PeopleArtFactory/paf-viewer-lib/issues"
+  },
   "author": "PeopleArtFactory.com",
   "license": "MIT",
   "type": "module",

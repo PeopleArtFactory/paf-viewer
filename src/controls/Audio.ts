@@ -24,7 +24,7 @@ class AudioControl {
 	}
 
 	public playNewAudioById(newAudioId: string, isGeneralAudio = false) {
-		console.log('playNewAudioById', newAudioId);
+
 		if (this._activeAudioId === newAudioId) return;
 		this._activeAudio?.stop();
 		this._audioButtom.className = 'icon-audio-on';

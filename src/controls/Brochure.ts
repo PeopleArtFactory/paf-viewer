@@ -30,6 +30,7 @@ export default class BrochureModal {
 		GalleryScene.instance.isModalOpen = true;
 	}
 	_closeCallbackFunction() {
+		GalleryScene.instance.viewer?.controls.initRoomAudio();
 		GalleryScene.instance.isModalOpen = false;
 	}
 	

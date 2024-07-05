@@ -2,12 +2,13 @@ import NavigationInfoModal from './NavigationInfo';
 import BrochureModal from './Brochure';
 import t from '../locale';
 
-export default class GeneralSettings {
+export default class Menu {
 	private _isPlacardActived = true;
+	private _navigationInfoModal: NavigationInfoModal;
+	private _brochureModal: BrochureModal;
 	constructor(controlsBar: HTMLElement) {
-		const brochureModal = new BrochureModal()
-		const navigationInfoModal = new NavigationInfoModal()
-		navigationInfoModal.show()
+		this._brochureModal = new BrochureModal()
+		this._navigationInfoModal = new NavigationInfoModal()
 		const menuPanel = document.createElement('div');
 		menuPanel.id = 'menu-panel';
 		menuPanel.className = 'hiden';
@@ -21,7 +22,7 @@ export default class GeneralSettings {
 		menuLink1.addEventListener(
 			'click',
 			() => {
-				brochureModal.show()
+				this._brochureModal.show()
 			},
 			false
 		);
@@ -33,7 +34,7 @@ export default class GeneralSettings {
 		menuLink2.addEventListener(
 			'click',
 			() => {
-				navigationInfoModal.show()
+				this._navigationInfoModal.show()
 			},
 			false
 		);
@@ -78,5 +79,11 @@ export default class GeneralSettings {
 	}
 	public get isPlacardActived() {
 		return this._isPlacardActived;
+	}
+	public get navigationInfoModal() {
+		return this._navigationInfoModal;
+	}
+	public get brochureModal() {
+		return this._brochureModal;	
 	}
 }
