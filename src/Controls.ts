@@ -321,8 +321,6 @@ export default class Controls {
   }
 
   public initRoomAudio() {
-
-    console.log("initRoomAudio");
     const generalAudioId =
       GalleryScene.instance.galleryData?.room?.generalAudioId;
     if (generalAudioId && this._isFirstLoad) {

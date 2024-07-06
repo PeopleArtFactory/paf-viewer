@@ -8,10 +8,11 @@ import {
   WebGLRenderer,
 } from "three";
 import type GalleryData from "./@types/GalleryData";
-import Room from "./@types/Room";
+import type Room from "./@types/Room";
 import type WallType from "./@types/Wall";
-import Frame from "./@types/Frame";
-import type AbstractEntity from "./entities/AbstractEntity";
+import type Frame from "./@types/Frame";
+
+import AbstractEntity from "./entities/AbstractEntity";
 import Wall from "./entities/Wall";
 import Plane from "./entities/Plane";
 import Content from "./entities/Content";
@@ -19,7 +20,7 @@ import Viewer from "./Viewer";
 import ResourceManager from "./ResourceManager";
 import * as Lights from "./Lights";
 
-interface ViewerSettings {
+interface Settings {
   POINTER_SLOW_SPEED_RANGE?: number;
   POINTER_SLOW_SPEED_CORRECTION_FACTOR?: number;
   POINTER_FAST_SPEED_CORRECTION_FACTOR?: number;
@@ -42,6 +43,7 @@ interface ViewerSettings {
 
   INITIAL_POSITION?: [number, number, number];
   START_MODAL?: "none" | "navigation-info" | "brochure";
+  HIGH_PERFORMANCE?: boolean; // If true switch off points lights and shadows.
 }
 
 export default class GalleryScene {
@@ -64,7 +66,7 @@ export default class GalleryScene {
     const galleryHTMLDiv = document.createElement("div");
     galleryHTMLDiv.id = "gallery-scene";
     document.body.appendChild(galleryHTMLDiv);
-    this._camera = new PerspectiveCamera(45, aspectRatio, 0.1, 10000);
+    this._camera = new PerspectiveCamera(45, aspectRatio);
     this._renderer = new WebGLRenderer({
       alpha: true,
       antialias: true,
@@ -72,8 +74,6 @@ export default class GalleryScene {
     this._renderer.setPixelRatio(devicePixelRatio);
     this._renderer.setSize(innerWidth, innerHeight);
     this._renderer.setClearColor(0x00000, 1);
-    this._renderer.shadowMap.enabled = true;
-    this._renderer.shadowMap.type = PCFSoftShadowMap;
     galleryHTMLDiv.appendChild(this._renderer.domElement);
     window.addEventListener("resize", this._resize, false);
   }
@@ -92,7 +92,7 @@ export default class GalleryScene {
     requestAnimationFrame(this._render);
   };
 
-  private _createWalls = async (room: Room) => {
+  private _createWalls = async (room: Room, isHighPerformace = false) => {
     let wallIndex = 0;
     room.walls.forEach(async (wallData: WallType) => {
       const {
@@ -114,7 +114,7 @@ export default class GalleryScene {
         backgroundImageId,
         audioId
       );
-      await wall.load();
+      await wall.load(isHighPerformace);
       this._maxWallDistance.max(wallPosition);
       this._minWallDistance.min(wallPosition);
       this._maxWallHight = Math.max(this._maxWallHight, size[1]);
@@ -131,16 +131,27 @@ export default class GalleryScene {
           frameData,
           isVideo
         );
-        await content.load();
+        await content.load(isHighPerformace);
         content.mesh.position.set(
           position[0] + size[0] / 2,
           wallData.size[1] - position[1] - size[1] / 2,
           position[2]
         );
         wall.mesh.add(content.mesh);
-        if (contentData.spotLight && room?.lights.spotLights) {
-          const { color, intensity, distance, angle, penumbra, decay } =
-            room?.lights.spotLights[contentData.spotLight.spotLightIndex];
+        if (
+          contentData.spotLight &&
+          room.lights.spotLights &&
+          !isHighPerformace
+        ) {
+          const {
+            color,
+            intensity,
+            distance,
+            angle,
+            penumbra,
+            decay,
+            positionZ,
+          } = room.lights.spotLights[contentData.spotLight.spotLightIndex];
           const spotLightBox = Lights.addSpotLight(
             wall._color,
             color,
@@ -151,10 +162,11 @@ export default class GalleryScene {
             decay,
             content.mesh
           );
+          const _positionZ = positionZ ? positionZ : 100;
           spotLightBox.position.set(
             content.mesh.position.x,
             this._maxWallHight,
-            100
+            _positionZ
           );
           wall.mesh.add(spotLightBox);
         }
@@ -168,24 +180,28 @@ export default class GalleryScene {
 
   public createRoom = async (
     galleryData: GalleryData,
-    settings: ViewerSettings | null = null
+    settings: Settings | null = null
   ) => {
     if (!galleryData || !galleryData.room) return;
+    const { ceiling, floor, lights } = galleryData.room;
     this._galleryData = galleryData;
+    //LOAD RESOURCES
     if (galleryData.allResources)
       ResourceManager.instance.load(galleryData.allResources);
-    await this._createWalls(galleryData.room);
-    const { ceiling, floor, lights } = galleryData.room;
+    //WALLS & CONTENTS
+    await this._createWalls(galleryData.room, settings?.HIGH_PERFORMANCE);
+    //CEILING & FLOOR
+    //The size is calculated from wall's max distance
+    const deltaWallDistanceX =
+      this._maxWallDistance.x - this._minWallDistance.x;
+    const deltaWallDistanceZ =
+      this._maxWallDistance.z - this._minWallDistance.z;
     const _ceiling = new Plane(
-      new Vector3(
-        this._maxWallDistance.x - this._minWallDistance.x,
-        this._maxWallHight,
-        this._maxWallDistance.z - this._minWallDistance.z
-      ),
+      new Vector3(deltaWallDistanceX, this._maxWallHight, deltaWallDistanceZ),
       ceiling.color,
       ceiling.backgroundImageId
     );
-    await _ceiling.load();
+    await _ceiling.load(settings?.HIGH_PERFORMANCE);
     this._scene.add(_ceiling.mesh);
     this._entities.push(_ceiling);
     const _floor = new Plane(
@@ -197,16 +213,11 @@ export default class GalleryScene {
       floor.color,
       floor.backgroundImageId
     );
-    await _floor.load();
+    await _floor.load(settings?.HIGH_PERFORMANCE);
     _floor.mesh.receiveShadow = true;
-
     this._scene.add(_floor.mesh);
     this._entities.push(_floor);
-    const ambientLight = Lights.setAmbientLight(
-      lights.ambientLight.color,
-      lights.ambientLight.intensity
-    );
-    this._scene.add(ambientLight);
+    //VIEWER & CONTROLS
     const firstWallAngle = galleryData.room?.walls[0].angle;
     const firstWallWidth = galleryData.room?.walls[0].size[0] / 2;
     const viewerHight = settings?.VIEWER_HIGHT ? settings?.VIEWER_HIGHT : 175;
@@ -225,13 +236,26 @@ export default class GalleryScene {
       -Math.PI / thetaFactor
     );
     if (settings) this._viewer.setSettings(settings);
-
+    //LIGHTS & SHADOWS
+    if (!settings?.HIGH_PERFORMANCE) {
+      const ambientLight = Lights.setAmbientLight(
+        lights.ambientLight.color,
+        lights.ambientLight.intensity
+      );
+      this._scene.add(ambientLight);
+      this._renderer.shadowMap.enabled = true;
+      this._renderer.shadowMap.type = PCFSoftShadowMap;
+    }
+    //STAR MODAL
     const starModal = settings?.START_MODAL
       ? settings?.START_MODAL
       : "navigation-info";
-
-	if(starModal == "brochure") this._viewer.controls.menu.brochureModal.show();
-	if(starModal == "navigation-info") this._viewer.controls.menu.navigationInfoModal.show();
+    if (starModal == "brochure")
+      this._viewer.controls.menu.brochureModal.show();
+    if (starModal == "navigation-info")
+      this._viewer.controls.menu.navigationInfoModal.show();
+    //RENDERING
+    this._camera.far = Math.max(deltaWallDistanceX, deltaWallDistanceZ) * 1.1;
     this._render();
   };
 

@@ -50,9 +50,9 @@ GalleryScene.instance.createRoom(galleryDataFile, settings);
 ```
 
 ## Setting Options (default values):
-```javascript	
-    VIEWER_HIGHT: 175,
+```javascript
 
+    VIEWER_HIGHT: 175,
     POINTER_SLOW_SPEED_RANGE: 100,
     POINTER_SLOW_SPEED_CORRECTION_FACTOR: 0.5,
     POINTER_FAST_SPEED_CORRECTION_FACTOR: 10,
@@ -69,12 +69,13 @@ GalleryScene.instance.createRoom(galleryDataFile, settings);
     ZOOM_SPEED: 1.5,
     PHI_SPEED: 0.8,
     THETA_SPEED: 0.4,
-    COLLISION_DISTANCE:40,
-    MIN_END_DISTANCE: 50,
-    MAX_END_DISTANCE: 300,
+    COLLISION_DISTANCE:20,
+    MIN_END_DISTANCE: 30,
+    MAX_END_DISTANCE: 250,
 
     INITIAL_POSITION: [number, number, number];
-    START_MODAL: "none" | "navigation-info" | "brochure";
+    START_MODAL: "none" | "navigation-info" | "brochure"; 
+    HIGH_PERFORMANCE: true; // Switch off all Spot Lights and Shadows.
 ```
 ## Authors
 

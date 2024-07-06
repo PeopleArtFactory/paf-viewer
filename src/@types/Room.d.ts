@@ -7,6 +7,7 @@ interface SpotLight {
 	angle: number; //Maximum angle of light dispersion from its direction whose upper bound is Math.PI/2.
 	penumbra: number; //Penumbra is the size of the light's shadow. Default is 0 (no shadow).
 	decay: number; //Decay is the rate at which the light's intensity diminishes. Default is 1.
+	positionZ?: number; //Distance to the center of the target measured in the z-axis. Default is 100.
 }
 interface Lights {
 	ambientLight: {

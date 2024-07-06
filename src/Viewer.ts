@@ -30,7 +30,8 @@ let PHI_SPEED = 0.8;
 let THETA_SPEED = 0.4;
 let COLLISION_DISTANCE = 20;
 let MIN_END_DISTANCE = 30;
-let MAX_END_DISTANCE = 200;
+let MAX_END_DISTANCE = 250;
+
 interface Pointer {
   id: number;
   initPosition: Vector2;
@@ -255,8 +256,11 @@ class Viewer {
 
   public setSettings(settings: Object) {
     for (const [key, value] of Object.entries(settings)) {
-      try{eval(`${key} = ${value};`)}catch(e){}
+      try {
+        eval(`${key} = ${value};`);
+      } catch (e) {}
     }
+    MIN_END_DISTANCE = MIN_END_DISTANCE < 10 ? 10 : MIN_END_DISTANCE;
   }
 
   constructor(position: Vector3, phi = 0, theta = -Math.PI / THETA_FACTOR) {
@@ -386,7 +390,6 @@ class Viewer {
   }
 
   public moveToObject3D(target: Object3D) {
-    //  console.log(VIEWER_HIGHT)
     this._controls.hideContentInfo();
     if (GalleryScene.instance.isModalOpen || !target) return;
     const wallIndex = target.userData.wallIndex;

@@ -8,6 +8,7 @@ import {
   Vector3,
   BufferGeometry,
   CircleGeometry,
+  MeshBasicMaterial,
 } from "three";
 import ResourceManager from "../ResourceManager";
 import Frame from "../@types/Frame";
@@ -34,18 +35,26 @@ class Content {
     this._frameData = frameData;
     this._isVideo = isVideo;
   }
-  public load = async () => {
+  public load = async (isHighPerformace: boolean = false) => {
     const contentGeometry = new BoxGeometry(...this._size);
-    const contentMaterial = new MeshStandardMaterial({
-      map: ResourceManager.instance.getImageResource(this._resourceId),
-    });
+    let contentMaterial: MeshStandardMaterial | MeshBasicMaterial;
+    if (isHighPerformace) {
+      contentMaterial = new MeshBasicMaterial();
+    } else {
+      contentMaterial = new MeshStandardMaterial();
+    }
+    const contentImage = ResourceManager.instance.getImageResource(
+      this._resourceId
+    );
+    if (!contentImage) return;
+    contentMaterial.map = contentImage;
     const contentMesh = new Mesh(contentGeometry, contentMaterial);
     contentMesh.userData.type = "content";
     contentMesh.userData.id = this._resourceId;
     contentMesh.userData.wallIndex = this._wallIndex;
     contentMesh.castShadow = true;
-
     this._mesh.add(contentMesh);
+
     if (this._frameData) {
       const { frameWidth, frameColor, matWidth, matColor, isGlassed } =
         this._frameData;
@@ -59,9 +68,9 @@ class Content {
         this._size[1] + matWidth / 10,
         0.1
       );
-      const matMaterial = new MeshStandardMaterial({
-        color: matColor,
-      });
+      const matMaterial = contentMaterial.clone();
+      matMaterial.map = null;
+      matMaterial.color.set(matColor);
       const matMeshTop = new Mesh(matGeometryHorizontal, matMaterial);
       const matMeshBottom = new Mesh(matGeometryHorizontal, matMaterial);
       const matMeshLeft = new Mesh(matGeometryVertical, matMaterial);
@@ -104,10 +113,9 @@ class Content {
         this._size[1] + (2 * matWidth + frameWidth) / 10,
         frameWidth / 10
       );
-      const frameMaterial = new MeshStandardMaterial({
-        color: frameColor,
-      });
 
+      const frameMaterial = matMaterial.clone();
+      frameMaterial.color.set(frameColor);
       const frameMeshTop = new Mesh(frameGeometryHorizontal, frameMaterial);
       const frameMeshBottom = new Mesh(frameGeometryHorizontal, frameMaterial);
       const frameMeshLeft = new Mesh(frameGeometryVertical, frameMaterial);

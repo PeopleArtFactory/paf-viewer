@@ -14,6 +14,7 @@ body {
   margin: 0 auto;
   touch-action: none;
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
 }
 
 #gallery-scene {
@@ -339,6 +340,8 @@ div[class^="icon-"]:hover {
   background-color: var(--color-primary);
   border: 5px var(--color-primary) solid;
   border-radius: 100%;
+  width: 2rem !important;
+  height: 2rem!important;
 }
 .zoom-in {
   background-image: url("./icons/binoculars.svg");
