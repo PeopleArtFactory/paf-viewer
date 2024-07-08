@@ -13,8 +13,10 @@ const galleryData = galleryDataFile as unknown as GalleryData;
 
 if (galleryData) {
   galleryData.allResources.map((resource) => {
+  
     resource.url = "demo/" + resource.fileName;
+    console.log(resource);
   });
 }
 
-GalleryScene.instance.createRoom(galleryData, { START_MODAL: "none", MAX_END_DISTANCE: 250 });
+GalleryScene.instance.load(galleryData, { START_MODAL: "none", HIGH_PERFORMANCE: true });

@@ -30,6 +30,7 @@ export function addSpotLight(
 		color: boxColor
 	});
 	const spotLightBox = new Mesh(geometry, material);
+	
 	spotLightBox.rotateX(-Math.PI / 6);
 	const lightCone = new Mesh(
 		new CylinderGeometry(3, 1, 4),

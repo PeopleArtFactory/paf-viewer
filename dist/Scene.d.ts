@@ -3,7 +3,7 @@ import { default as GalleryData } from './@types/GalleryData';
 import { default as AbstractEntity } from './entities/AbstractEntity';
 import { default as Viewer } from './Viewer';
 
-interface ViewerSettings {
+interface Settings {
     POINTER_SLOW_SPEED_RANGE?: number;
     POINTER_SLOW_SPEED_CORRECTION_FACTOR?: number;
     POINTER_FAST_SPEED_CORRECTION_FACTOR?: number;
@@ -25,6 +25,7 @@ interface ViewerSettings {
     VIEWER_HIGHT?: number;
     INITIAL_POSITION?: [number, number, number];
     START_MODAL?: "none" | "navigation-info" | "brochure";
+    HIGH_PERFORMANCE?: boolean;
 }
 export default class GalleryScene {
     private static _instance;
@@ -33,6 +34,7 @@ export default class GalleryScene {
     private _renderer;
     private _viewer;
     private _galleryData;
+    private _settings;
     private _entities;
     private _clock;
     private _maxWallDistance;
@@ -43,8 +45,10 @@ export default class GalleryScene {
     private _resize;
     private _render;
     private _createWalls;
-    createRoom: (galleryData: GalleryData, settings?: ViewerSettings | null) => Promise<void>;
+    load: (galleryData: GalleryData, settings?: Settings | null) => Promise<void>;
+    createRoom: (isHighPerformace?: boolean) => Promise<void>;
     get galleryData(): GalleryData | null;
+    get settings(): Settings | null;
     static get instance(): GalleryScene;
     get camera(): PerspectiveCamera;
     get children(): import('three').Object3D<import('three').Object3DEventMap>[];

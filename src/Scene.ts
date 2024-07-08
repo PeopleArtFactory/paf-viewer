@@ -53,6 +53,7 @@ export default class GalleryScene {
   private _renderer: WebGLRenderer;
   private _viewer: Viewer | null = null;
   private _galleryData: GalleryData | null = null;
+  private _settings: Settings | null = null;
   private _entities: AbstractEntity[] = [];
   private _clock: Clock = new Clock();
   private _maxWallDistance = new Vector3(0, 0, 0);
@@ -178,18 +179,26 @@ export default class GalleryScene {
     });
   };
 
-  public createRoom = async (
+  public load = async (
     galleryData: GalleryData,
     settings: Settings | null = null
   ) => {
-    if (!galleryData || !galleryData.room) return;
-    const { ceiling, floor, lights } = galleryData.room;
+    if (!galleryData) return;
     this._galleryData = galleryData;
+    this._settings = settings;
     //LOAD RESOURCES
     if (galleryData.allResources)
       ResourceManager.instance.load(galleryData.allResources);
+    this.createRoom(settings?.HIGH_PERFORMANCE);
+  };
+  public createRoom = async (isHighPerformace = false) => {
+    const galleryData = this._galleryData;
+    const settings = this._settings;
+    if (!galleryData || !galleryData.room) return;
+    this._scene.clear();
+    const { ceiling, floor, lights } = galleryData.room;
     //WALLS & CONTENTS
-    await this._createWalls(galleryData.room, settings?.HIGH_PERFORMANCE);
+    await this._createWalls(galleryData.room, isHighPerformace);
     //CEILING & FLOOR
     //The size is calculated from wall's max distance
     const deltaWallDistanceX =
@@ -201,7 +210,7 @@ export default class GalleryScene {
       ceiling.color,
       ceiling.backgroundImageId
     );
-    await _ceiling.load(settings?.HIGH_PERFORMANCE);
+    await _ceiling.load(isHighPerformace);
     this._scene.add(_ceiling.mesh);
     this._entities.push(_ceiling);
     const _floor = new Plane(
@@ -213,31 +222,43 @@ export default class GalleryScene {
       floor.color,
       floor.backgroundImageId
     );
-    await _floor.load(settings?.HIGH_PERFORMANCE);
+    await _floor.load(isHighPerformace);
     _floor.mesh.receiveShadow = true;
     this._scene.add(_floor.mesh);
     this._entities.push(_floor);
     //VIEWER & CONTROLS
-    const firstWallAngle = galleryData.room?.walls[0].angle;
-    const firstWallWidth = galleryData.room?.walls[0].size[0] / 2;
-    const viewerHight = settings?.VIEWER_HIGHT ? settings?.VIEWER_HIGHT : 175;
-    const initialPosition = settings?.INITIAL_POSITION
-      ? new Vector3(...settings?.INITIAL_POSITION)
-      : new Vector3(
-          firstWallWidth *
-            (Math.sin(firstWallAngle) + Math.cos(firstWallAngle)),
-          viewerHight,
-          firstWallWidth * (Math.cos(firstWallAngle) - Math.sin(firstWallAngle))
-        );
-    const thetaFactor = settings?.THETA_FACTOR ? settings?.THETA_FACTOR : 20;
-    this._viewer = new Viewer(
-      initialPosition,
-      firstWallAngle,
-      -Math.PI / thetaFactor
-    );
-    if (settings) this._viewer.setSettings(settings);
+    if (!this._viewer) {
+      const firstWallAngle = galleryData.room?.walls[0].angle;
+      const firstWallWidth = galleryData.room?.walls[0].size[0] / 2;
+      const viewerHight = settings?.VIEWER_HIGHT ? settings?.VIEWER_HIGHT : 175;
+      const initialPosition = settings?.INITIAL_POSITION
+        ? new Vector3(...settings?.INITIAL_POSITION)
+        : new Vector3(
+            firstWallWidth *
+              (Math.sin(firstWallAngle) + Math.cos(firstWallAngle)),
+            viewerHight,
+            firstWallWidth *
+              (Math.cos(firstWallAngle) - Math.sin(firstWallAngle))
+          );
+      const thetaFactor = settings?.THETA_FACTOR ? settings?.THETA_FACTOR : 20;
+      this._viewer = new Viewer(
+        initialPosition,
+        firstWallAngle,
+        -Math.PI / thetaFactor
+      );
+      if (settings) this._viewer.setSettings(settings);
+      //STAR MODAL
+      const starModal = settings?.START_MODAL
+        ? settings?.START_MODAL
+        : "navigation-info";
+      if (starModal == "brochure")
+        this._viewer.controls.menu.brochureModal.show();
+      if (starModal == "navigation-info")
+        this._viewer.controls.menu.navigationInfoModal.show();
+    }
+    this._viewer.controls.menu.setHightPerformance(isHighPerformace);
     //LIGHTS & SHADOWS
-    if (!settings?.HIGH_PERFORMANCE) {
+    if (!isHighPerformace) {
       const ambientLight = Lights.setAmbientLight(
         lights.ambientLight.color,
         lights.ambientLight.intensity
@@ -246,14 +267,7 @@ export default class GalleryScene {
       this._renderer.shadowMap.enabled = true;
       this._renderer.shadowMap.type = PCFSoftShadowMap;
     }
-    //STAR MODAL
-    const starModal = settings?.START_MODAL
-      ? settings?.START_MODAL
-      : "navigation-info";
-    if (starModal == "brochure")
-      this._viewer.controls.menu.brochureModal.show();
-    if (starModal == "navigation-info")
-      this._viewer.controls.menu.navigationInfoModal.show();
+
     //RENDERING
     this._camera.far = Math.max(deltaWallDistanceX, deltaWallDistanceZ) * 1.1;
     this._render();
@@ -261,6 +275,10 @@ export default class GalleryScene {
 
   public get galleryData() {
     return this._galleryData;
+  }
+
+  public get settings() {
+    return this._settings;
   }
   public static get instance() {
     return this._instance;

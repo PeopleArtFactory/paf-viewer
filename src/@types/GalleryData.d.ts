@@ -10,7 +10,7 @@ export default interface GalleryData {
 	dateUpdated?: Date | string;
 	galleryTags: string[];
 	links?: string[];
-	room?: Room;
+	room: Room;
 	allResources: Resource[];
 	options: {
 		disableHumanRef: boolean;

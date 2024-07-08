@@ -8,6 +8,7 @@ declare const _default: {
 	"Navigation Controls":"Controles de navegación",
 	"Show placard":"Mostrar cartela",
 	"Hide placard":"Ocultar cartela",
+	"High performance":"Alto rendimiento",
 	"Turn":"Girar",
 	"Click and drag with the mouse or one finger over the gallery":"Haz click y arrastra con el ratón o un dedo sobre la galería",
 	"Forward / Backward":"Moverte hacia delante / atrás",

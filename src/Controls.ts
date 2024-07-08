@@ -317,6 +317,7 @@ export default class Controls {
   }
 
   public playNewAudioById(newAudioId: string, isGeneralAudio = false) {
+    if (this._isFirstLoad) this.initRoomAudio();
     this._audioControl?.playNewAudioById(newAudioId, isGeneralAudio);
   }
 

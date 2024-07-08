@@ -398,7 +398,7 @@ class Viewer {
     if (!wall) return;
     const wallAudioId = wall.audioId;
     let wallAngle = wall.angle;
-    const endPoint = new Vector3();
+    const endPoint = new Vector3()
     //Active lights shadow before viewer arrive to the wall
     this._controls.castShadowWallLights(wallIndex);
 

@@ -3,12 +3,10 @@ import {
   BoxGeometry,
   MeshStandardMaterial,
   MeshPhysicalMaterial,
-  LineBasicMaterial,
-  Line,
-  Vector3,
-  BufferGeometry,
   CircleGeometry,
   MeshBasicMaterial,
+  Shape,
+  ShapeGeometry,
 } from "three";
 import ResourceManager from "../ResourceManager";
 import Frame from "../@types/Frame";
@@ -174,24 +172,30 @@ class Content {
     }
 
     if (this._isVideo) {
-      const playerMaterial = new MeshStandardMaterial({
+      const playerMaterial = new MeshBasicMaterial({
         color: "white",
+        opacity: 0.3,
+        transparent: true,
       });
+
       const playerMesh = new Mesh(new CircleGeometry(20, 40), playerMaterial);
       playerMesh.position.set(0, 0, 2);
-      const lineMaterial = new LineBasicMaterial({
-        color: "black",
-        linewidth: 2,
+
+      const triangleShape = new Shape();
+      triangleShape.moveTo(-10, -10);
+      triangleShape.lineTo(10, 0);
+      triangleShape.lineTo(-10, 10);
+      triangleShape.lineTo(-10, -10);
+      const triangleGeometry = new ShapeGeometry(triangleShape);
+      const triangleMaterial = new MeshBasicMaterial({
+        color: "white",
+        opacity: 0.6,
+        transparent: true,
       });
-      const linePoints: Vector3[] = [];
-      linePoints.push(new Vector3(-8, 10, 0));
-      linePoints.push(new Vector3(12, 0, 0));
-      linePoints.push(new Vector3(-8, -10, 0));
-      linePoints.push(new Vector3(-8, 10, 0));
-      const geometry = new BufferGeometry().setFromPoints(linePoints);
-      const line = new Line(geometry, lineMaterial);
-      line.position.set(0, 0, 1);
-      playerMesh.add(line);
+      const triangleMesh = new Mesh(triangleGeometry, triangleMaterial);
+      triangleMesh.position.set(2.5, 0, -0.5);
+
+      playerMesh.add(triangleMesh);
       playerMesh.userData.type = "video-player";
       playerMesh.userData.id = this._resourceId;
       this._mesh.add(playerMesh);

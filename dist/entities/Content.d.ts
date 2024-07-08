@@ -1,4 +1,4 @@
-import { Mesh, BufferGeometry } from 'three';
+import { Mesh } from 'three';
 import { default as Frame } from '../@types/Frame';
 
 declare class Content {
@@ -8,9 +8,9 @@ declare class Content {
     readonly _size: number[];
     readonly _frameData: Frame | null;
     private _mesh;
-    get mesh(): Mesh<BufferGeometry<import('three').NormalBufferAttributes>, import('three').Material | import('three').Material[], import('three').Object3DEventMap>;
+    get mesh(): Mesh<import('three').BufferGeometry<import('three').NormalBufferAttributes>, import('three').Material | import('three').Material[], import('three').Object3DEventMap>;
     constructor(wallIndex: number, resourceId: string, size: number[], //[hight, width, depth]
     frameData?: Frame | null, isVideo?: boolean);
-    load: () => Promise<void>;
+    load: (isHighPerformace?: boolean) => Promise<void>;
 }
 export default Content;

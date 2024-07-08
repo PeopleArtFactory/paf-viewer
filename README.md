@@ -1,8 +1,8 @@
 # PAF 3D VIEWER
+
 Open Source 3D Viewer developed just using TypeScript & Three.js (WebGL). You can download yours virtual galleries from [PeopleArtFactory.com](https://PeopleArtFactory.com) and host it in any web server, whenever you want and just for free.
 
-
-### 🔗  [Learn More ](https://docs.peopleartfactory.com/)
+### 🔗 [Learn More ](https://docs.peopleartfactory.com/)
 
 ## Usage
 
@@ -20,7 +20,7 @@ npm install --save paf-viewer
 import "./node_modules/paf-viewer/dist/style.css";
 import { GalleryScene } from "paf-viewer";
 //Typescript
-import type { GalleryData, Resource } from "paf-viewer";
+import type { GalleryData } from "paf-viewer";
 ```
 
 4. Update each resource URL with the new location of in your server:
@@ -34,9 +34,9 @@ if (galleryDataFile) {
 }
 //Typescript
 import galleryDataFile from "/YOUR ROUTE TO data.json";
-const galleryData = galleryDataFile as GalleryData;
+const galleryData = galleryDataFile as unknown as GalleryData;
 if (galleryData) {
-  galleryData.allResources.map((resource: Resource) => {
+  galleryData.allResources.map((resource) => {
     resource.url = "/YOUR ROUTE/" + resource.fileName;
   });
 }
@@ -45,11 +45,12 @@ if (galleryData) {
 5. Create a new instance of the GalleryScene:
 
 ```javascript
-const settings = { VIEWER_HIGHT: 190 } // (optional);
-GalleryScene.instance.createRoom(galleryDataFile, settings);
+const settings = { VIEWER_HIGHT: 190, HIGH_PERFORMANCE: true }; // (optional);
+GalleryScene.instance.load(galleryDataFile, settings);
 ```
 
 ## Setting Options (default values):
+
 ```javascript
 
     VIEWER_HIGHT: 175,
@@ -74,9 +75,10 @@ GalleryScene.instance.createRoom(galleryDataFile, settings);
     MAX_END_DISTANCE: 250,
 
     INITIAL_POSITION: [number, number, number];
-    START_MODAL: "none" | "navigation-info" | "brochure"; 
+    START_MODAL: "none" | "navigation-info" | "brochure";
     HIGH_PERFORMANCE: true; // Switch off all Spot Lights and Shadows.
 ```
+
 ## Authors
 
 - [@peopleartfactory](https://github.com/peopleartfactory)

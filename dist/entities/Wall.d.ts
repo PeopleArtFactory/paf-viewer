@@ -8,6 +8,6 @@ declare class Wall extends AbstractEntity {
     readonly _backgroundPatternId: string | null;
     readonly _backgroundImageId: string | null;
     constructor(position: Vector3, size: number[], angle: number, color: string, backgroundPatternId?: string | null, backgroundImageId?: string | null, audioId?: string | null);
-    load: () => Promise<void>;
+    load: (isHighPerformace?: boolean) => Promise<void>;
 }
 export default Wall;

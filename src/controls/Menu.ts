@@ -1,9 +1,12 @@
 import NavigationInfoModal from './NavigationInfo';
 import BrochureModal from './Brochure';
+import GalleryScene from "../Scene";
+
 import t from '../locale';
 
 export default class Menu {
 	private _isPlacardActived = true;
+	private _isHightPerformance: boolean | undefined = GalleryScene.instance.settings?.HIGH_PERFORMANCE;
 	private _navigationInfoModal: NavigationInfoModal;
 	private _brochureModal: BrochureModal;
 	constructor(controlsBar: HTMLElement) {
@@ -56,6 +59,31 @@ export default class Menu {
 			false
 		);
 
+		const menuLink4 = document.createElement('div');
+		menuLink4.className = 'menu-link';
+		menuPanel.appendChild(menuLink4);
+		if (this._isHightPerformance) {
+			menuLink4.innerHTML = `<div class='icon-toggle-on'></div>${t('High performance')}`;
+		} else {
+			menuLink4.innerHTML = `<div class='icon-toggle-off'></div>${t('High performance')}`;
+		}
+		menuLink4.addEventListener(
+			'click',
+			() => {
+				if (!this._isHightPerformance) {
+					menuLink4.innerHTML = `<div class='icon-toggle-on'></div>${t('High performance')}`;
+				} else {
+					menuLink4.innerHTML = `<div class='icon-toggle-off'></div>${t('High performance')}`;
+				}
+				this._isHightPerformance = !this._isHightPerformance;
+				GalleryScene.instance.createRoom(this._isHightPerformance);
+				
+
+			},
+			false
+		);
+
+
 		const controlButtom = document.createElement('div');
 		controlButtom.id = 'menu-control-buttom';
 		controlButtom.className = 'icon-menu';
@@ -79,6 +107,10 @@ export default class Menu {
 	}
 	public get isPlacardActived() {
 		return this._isPlacardActived;
+	}
+
+	public setHightPerformance(value: boolean) {
+		this._isHightPerformance = value;
 	}
 	public get navigationInfoModal() {
 		return this._navigationInfoModal;
