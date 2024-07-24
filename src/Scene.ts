@@ -7,11 +7,11 @@ import {
   Vector3,
   WebGLRenderer,
 } from "three";
+
 import type GalleryData from "./@types/GalleryData";
 import type Room from "./@types/Room";
 import type WallType from "./@types/Wall";
 import type Frame from "./@types/Frame";
-
 import AbstractEntity from "./entities/AbstractEntity";
 import Wall from "./entities/Wall";
 import Plane from "./entities/Plane";
@@ -37,8 +37,7 @@ interface Settings {
   ZOOM_SPEED?: number;
   PHI_SPEED?: number;
   THETA_SPEED?: number;
-  MIN_END_DISTANCE?: number;
-  MAX_END_DISTANCE?: number;
+  CONTENT_DISTANCE?: number;
   VIEWER_HIGHT?: number;
 
   INITIAL_POSITION?: [number, number, number];
@@ -56,13 +55,15 @@ export default class GalleryScene {
   private _settings: Settings | null = null;
   private _entities: AbstractEntity[] = [];
   private _clock: Clock = new Clock();
-  private _maxWallDistance = new Vector3(0, 0, 0);
-  private _minWallDistance = new Vector3(0, 0, 0);
+  private _maxWallPosition = new Vector3(0, 0, 0);
+  private _minWallPosition = new Vector3(0, 0, 0);
   private _maxWallHight = 0;
+  private _windowInnerWidth = 0;
   public isModalOpen = false;
 
   private constructor() {
     const { innerWidth, innerHeight, devicePixelRatio } = window;
+    this._windowInnerWidth = innerWidth;
     const aspectRatio = innerWidth / innerHeight;
     const galleryHTMLDiv = document.createElement("div");
     galleryHTMLDiv.id = "gallery-scene";
@@ -84,6 +85,7 @@ export default class GalleryScene {
     this._renderer.setSize(innerWidth, innerHeight);
     this._camera.aspect = innerWidth / innerHeight;
     this._camera.updateProjectionMatrix();
+    this._windowInnerWidth = innerWidth;
   };
 
   private _render = () => {
@@ -106,6 +108,7 @@ export default class GalleryScene {
         audioId,
       } = wallData;
       const wallPosition = new Vector3(...position);
+
       const wall = new Wall(
         wallPosition,
         size,
@@ -116,8 +119,8 @@ export default class GalleryScene {
         audioId
       );
       await wall.load(isHighPerformace);
-      this._maxWallDistance.max(wallPosition);
-      this._minWallDistance.min(wallPosition);
+      this._maxWallPosition.max(wallPosition);
+      this._minWallPosition.min(wallPosition);
       this._maxWallHight = Math.max(this._maxWallHight, size[1]);
       wallData.contents?.forEach(async (contentData) => {
         const { resourceId, position, size, frameIndex, isVideo } = contentData;
@@ -200,13 +203,18 @@ export default class GalleryScene {
     //WALLS & CONTENTS
     await this._createWalls(galleryData.room, isHighPerformace);
     //CEILING & FLOOR
-    //The size is calculated from wall's max distance
     const deltaWallDistanceX =
-      this._maxWallDistance.x - this._minWallDistance.x;
+      this._maxWallPosition.x + this._minWallPosition.x;
     const deltaWallDistanceZ =
-      this._maxWallDistance.z - this._minWallDistance.z;
+      this._maxWallPosition.z + this._minWallPosition.z;
+    const maxDistance = this._maxWallPosition.distanceTo(this._minWallPosition);
     const _ceiling = new Plane(
-      new Vector3(deltaWallDistanceX, this._maxWallHight, deltaWallDistanceZ),
+      new Vector3(
+        deltaWallDistanceX / 2,
+        this._maxWallHight,
+        deltaWallDistanceZ / 2
+      ),
+      maxDistance,
       ceiling.color,
       ceiling.backgroundImageId
     );
@@ -214,11 +222,8 @@ export default class GalleryScene {
     this._scene.add(_ceiling.mesh);
     this._entities.push(_ceiling);
     const _floor = new Plane(
-      new Vector3(
-        this._maxWallDistance.x - this._minWallDistance.x,
-        0,
-        this._maxWallDistance.z - this._minWallDistance.z
-      ),
+      new Vector3(deltaWallDistanceX / 2, 0, deltaWallDistanceZ / 2),
+      maxDistance,
       floor.color,
       floor.backgroundImageId
     );
@@ -267,16 +272,14 @@ export default class GalleryScene {
       this._renderer.shadowMap.enabled = true;
       this._renderer.shadowMap.type = PCFSoftShadowMap;
     }
-
     //RENDERING
-    this._camera.far = Math.max(deltaWallDistanceX, deltaWallDistanceZ) * 1.1;
+    this._camera.far = maxDistance;
+    this.camera.updateProjectionMatrix();
     this._render();
   };
-
   public get galleryData() {
     return this._galleryData;
   }
-
   public get settings() {
     return this._settings;
   }
@@ -294,5 +297,8 @@ export default class GalleryScene {
   }
   public get viewer() {
     return this._viewer;
+  }
+  public get windowInnerWidth() {
+    return this._windowInnerWidth;
   }
 }

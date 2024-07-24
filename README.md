@@ -71,9 +71,8 @@ GalleryScene.instance.load(galleryDataFile, settings);
     PHI_SPEED: 0.8,
     THETA_SPEED: 0.4,
     COLLISION_DISTANCE:20,
-    MIN_END_DISTANCE: 30,
-    MAX_END_DISTANCE: 250,
-
+    CONTENT_DISTANCE: 250,
+   
     INITIAL_POSITION: [number, number, number];
     START_MODAL: "none" | "navigation-info" | "brochure";
     HIGH_PERFORMANCE: true; // Switch off all Spot Lights and Shadows.
@@ -93,3 +92,6 @@ Proud to be with the best people on Earth.
 
 - [Three.js](https://threejs.org/)
 - [Vite](https://vitejs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [iv-viewer](https://github.com/s-yadav/iv-viewer)
+- [Lucide Icons](https://lucide.dev/)

@@ -18,7 +18,7 @@ export default class BrochureModal {
 		<div>	
 			<p><strong>${galleryData.synopsis}</strong></p>
        		<p>${galleryData.description}</p>
-			<p>`;
+			<p><br>`;
 			galleryData.galleryTags.forEach(tag=>{
 				innerHTML +=`<small class='brochure-tag' >${tag}</small>`
 			})

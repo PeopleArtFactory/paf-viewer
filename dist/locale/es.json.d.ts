@@ -17,8 +17,8 @@ declare const _default: {
 	"Use the virtual joystick or the horizontal arrows keys":"Usa el joystick virtual o las flechas horizontales",
 	"Change wall":"Cambiar de pared",
 	"Use the arrow buttons or the spacebar":"Usa los botones de flechas o la barra espaciadora",
-	"Zoom Mode":"Modo zoom",
-	"Activate it pressing the binoculars icon. Move using virtual joystick or arrows keys. You cannot change the wall until switch it off":"Activalo pulsando el icono de los binoculares. Muevete usando el jostick virtual o las flechas del teclado. No podrás cambiar de pared hasta que lo apagues"
+	"Activate Zoom Mode":"Activar Modo zoom",
+	"Click on the zoom icon that appears when you are approaching to a content":"Haz clic en el icono de zoom que aparece cuando te acercas a un contenido"
 }
 ;
 

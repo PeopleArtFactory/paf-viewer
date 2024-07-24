@@ -1,4 +1,4 @@
-import t from "../locale";
+
 export default class Modal {
 	private _modal: HTMLElement;
 	private _header: HTMLElement;
@@ -35,7 +35,7 @@ export default class Modal {
 		modalPanel.appendChild(modalBody);
 		modalPanel.appendChild(modalFooter);
 		const closeButtom = document.createElement('div');
-		closeButtom.innerHTML = `<div class="icon-label">${t('Close')}</div><div class="icon-close"/>`;
+		closeButtom.innerHTML = `<span class="modal-close"></span>`;
 		closeButtom.setAttribute('style', 'display:inline-block;float:right');
 		modalHeader.appendChild(closeButtom);
 		closeButtom.addEventListener(

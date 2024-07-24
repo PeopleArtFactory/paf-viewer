@@ -24,7 +24,6 @@ class AudioControl {
 	}
 
 	public playNewAudioById(newAudioId: string, isGeneralAudio = false) {
-
 		if (this._activeAudioId === newAudioId) return;
 		this._activeAudio?.stop();
 		this._audioButtom.className = 'icon-audio-on';
@@ -52,6 +51,10 @@ class AudioControl {
 			audioControlButtom.className = 'icon-audio-on';
 		}
 		this._isPlayingAudio = !this._isPlayingAudio;
+	}
+
+	public get generalAudio() {
+		return this._generalAudio;
 	}
 }
 export default AudioControl;

@@ -6,13 +6,13 @@ import AudioControl from "./controls/Audio";
 import FullScreenControl from "./controls/Fullscreen";
 import ShareControl from "./controls/Share";
 import Menu from "./controls/Menu";
+import ImageViewer from "./controls/ImageViewer";
 import t from "./locale";
 
 function getFirstWallContentId(wall: Wall, directionSign = 1) {
   if (wall.contents == undefined || wall.contents.length == 0) return null;
   let firstWallContentPosition = (wall.size[0] * (1 + directionSign)) / 2;
   let firstWallContentId = wall.contents[0].resourceId;
-
   for (let i = 0; i < wall.contents.length; i++) {
     if (directionSign > 0) {
       if (wall.contents[i].position[0] < firstWallContentPosition) {
@@ -33,15 +33,13 @@ export default class Controls {
   private _wallsObj3D: Object3D[] = GalleryScene.instance.children.filter(
     (obj) => obj.userData.type === "wall"
   );
-  private _activeWallIndex = 0;
+  private _activeWallIndex = -1;
   private _activeWallLabel: HTMLElement;
   private _activeContentId: string | null = null;
   private _contentInfo: HTMLElement;
   private _zoomButtom: HTMLElement;
   private _audioControl: AudioControl | null = null;
   private _menuOptions: Menu;
-  private _isFirstLoad = true;
-  public isZoomActive = false;
 
   constructor() {
     const contentInfoDiv = document.createElement("div");
@@ -61,12 +59,10 @@ export default class Controls {
     this._menuOptions = new Menu(controlsBar);
     new ShareControl(controlsBar);
     const audioResourcesSize = ResourceManager.instance.getAudioResourcesSize();
-
     if (audioResourcesSize > 0) {
       this._audioControl = new AudioControl(controlsBar);
     }
     new FullScreenControl(controlsBar);
-
     const logo = document.createElement("div");
     logo.id = "logo-paf";
     controlsBar.appendChild(logo);
@@ -100,20 +96,19 @@ export default class Controls {
       },
       false
     );
-
+    const imageViewer = new ImageViewer();
     const controlZoom = document.createElement("div");
     controlZoom.id = "control-zoom";
-    controlZoom.className = "icon-zoom zoom-in hiden";
+    controlZoom.className = "hiden";
     controlsPanel?.appendChild(controlZoom);
     this._zoomButtom = controlZoom;
     controlZoom.addEventListener(
       "click",
       () => {
-        this._zoomActiveContent(
-          controlZoom,
-          controlButtomLeft,
-          controlButtomRight
-        );
+        const imageUrl = GalleryScene.instance.galleryData?.allResources.find(
+          (r) => r.id === this._activeContentId
+        )?.url;
+        if (imageUrl) imageViewer.show(imageUrl);
       },
       false
     );
@@ -127,6 +122,70 @@ export default class Controls {
     );
   }
 
+  public setActiveContent(contentId: string, activeWallIndex: number) {
+    this._activeContentId = contentId;
+    this.showContentInfo(contentId);
+    this.setActiveWallIndex(activeWallIndex);
+  }
+  public setActiveWallIndex(activeWallIndex: number) {
+    if (this._activeWallIndex === activeWallIndex) return;
+    const maxWallNumber = GalleryScene.instance.galleryData?.room?.walls.length;
+    if (!maxWallNumber) return;
+    this._activeWallIndex = activeWallIndex;
+    this._activeWallLabel.innerHTML = `<p>${t("Wall")}: ${
+      this._activeWallIndex + 1
+    }<small> / ${maxWallNumber}</small></p>`;
+    const wallAudio =
+      GalleryScene.instance.galleryData?.room?.walls[activeWallIndex].audioId;
+    if (wallAudio) {
+      this.playNewAudioById(wallAudio);
+    }
+  }
+
+  public showContentInfo(contentId: string) {
+    if (!this._menuOptions.isPlacardActived) return;
+    const content = GalleryScene.instance.galleryData?.allResources?.filter(
+      (item) => item.id === contentId
+    )[0];
+    if (!content) return;
+    this._activeContentId = contentId;
+    const contentInfo = content.info;
+    if (contentInfo && !content.disabled) {
+      this._contentInfo.classList.remove("hiden");
+      this._zoomButtom.classList.remove("hiden");
+      let innerHTML = `<strong>${contentInfo.name}</strong>`;
+      innerHTML += contentInfo.description
+        ? `<p>${contentInfo.description}</p>`
+        : "</br></br>";
+      const { showDimensions, height, width, depth } = {
+        ...contentInfo.realDimensions,
+      };
+      if (showDimensions) {
+        if (height && width && depth) {
+          innerHTML += `<small>${height} x ${width} x ${depth} cm - 
+					${(height * 0.39).toFixed(2)} x ${(width * 0.39).toFixed(2)} x ${(
+            depth * 0.39
+          ).toFixed(2)} in</small>`;
+        }
+        if (height && width) {
+          innerHTML += `<small>${height} x ${width} cm - ${(
+            height * 0.39
+          ).toFixed(2)} x ${(width * 0.39).toFixed(2)} in</small>`;
+        }
+      }
+      if (contentInfo.price && contentInfo.price != "0")
+        innerHTML += `<p>${contentInfo.price}</p>`;
+      const labelTex = t("Open Link");
+      if (contentInfo.refUrl) {
+        innerHTML += `</br></strong><a href="${contentInfo.refUrl}" target="_blank" style="display:flex;margin-top:15px;font-weight:bold"><div class="icon-external-link" style="margin-top:-3px" ></div>${labelTex}</a></strong>`;
+      }
+      this._contentInfo.innerHTML = innerHTML;
+    }
+  }
+  public hideContentInfo() {
+    this._contentInfo.className = "hiden";
+    this._zoomButtom.className = "hiden";
+  }
   private _moveToNextWall(directionSign = 1) {
     const maxWallIndex = this._wallsObj3D.length - 1;
     let nextWallIndex = this._activeWallIndex + directionSign;
@@ -152,40 +211,6 @@ export default class Controls {
     }
     GalleryScene.instance?.viewer?.moveToObject3D(target);
   }
-
-  private _zoomActiveContent(
-    controlZoom: HTMLDivElement,
-    controlButtomLeft: HTMLDivElement,
-    controlButtomRight: HTMLDivElement
-  ) {
-    const activeWallIndex = this._activeWallIndex;
-    const activeContentId = this._activeContentId;
-    this.isZoomActive = !this.isZoomActive;
-    const target = this._wallsObj3D[activeWallIndex].children.filter(
-      (item) => item.userData.id === activeContentId
-    )[0];
-    GalleryScene.instance?.viewer?.moveToObject3D(target);
-    if (this.isZoomActive) {
-      controlZoom.classList.replace("zoom-in", "zoom-out");
-      controlButtomLeft.classList.add("hiden");
-      controlButtomRight.classList.add("hiden");
-    } else {
-      controlZoom.classList.replace("zoom-out", "zoom-in");
-      controlButtomLeft.classList.remove("hiden");
-      controlButtomRight.classList.remove("hiden");
-    }
-  }
-
-  public setActiveWallIndex(activeWallIndex: number) {
-    const maxWallNumber = GalleryScene.instance.galleryData?.room?.walls.length;
-    if (!maxWallNumber) return;
-    this._activeWallIndex = activeWallIndex;
-
-    this._activeWallLabel.innerHTML = `<p>${t("Wall")}: ${
-      this._activeWallIndex + 1
-    }<small> / ${maxWallNumber}</small></p>`;
-  }
-
   public castShadowWallLights(wallActiveIndex = 0) {
     let wallIndex = 0;
     let actualValue = false;
@@ -204,7 +229,6 @@ export default class Controls {
   }
 
   public moveToNextContent(directionSign = 1) {
-    if (this.isZoomActive) return;
     this.hideContentInfo();
     //case 0: There is no active content yet.
     if (!this._activeContentId) {
@@ -269,64 +293,22 @@ export default class Controls {
       this._moveToNextWall(directionSign);
     }
   }
-
-  public showContentInfo(contentId: string) {
-    if (!this._menuOptions.isPlacardActived) return;
-    const content = GalleryScene.instance.galleryData?.allResources?.filter(
-      (item) => item.id === contentId
-    )[0];
-    if (!content) return;
-    this._activeContentId = contentId;
-    const contentInfo = content.info;
-
-    if (contentInfo && !content.disabled) {
-      this._contentInfo.classList.remove("hiden");
-      this._zoomButtom.classList.remove("hiden");
-      let innerHTML = `<strong>${contentInfo.name}</strong>`;
-      innerHTML += contentInfo.description
-        ? `<p>${contentInfo.description}</p>`
-        : "</br></br>";
-      const { showDimensions, height, width, depth } = {
-        ...contentInfo.realDimensions,
-      };
-      if (showDimensions) {
-        if (height && width && depth) {
-          innerHTML += `<small>${height} x ${width} x ${depth} cm - 
-					${(height * 0.39).toFixed(2)} x ${(width * 0.39).toFixed(2)} x ${(
-            depth * 0.39
-          ).toFixed(2)} in</small>`;
-        }
-        if (height && width) {
-          innerHTML += `<small>${height} x ${width} cm - ${(
-            height * 0.39
-          ).toFixed(2)} x ${(width * 0.39).toFixed(2)} in</small>`;
-        }
-      }
-      if (contentInfo.price && contentInfo.price != "0")
-        innerHTML += `<p>${contentInfo.price}</p>`;
-      const labelTex = t("Open Link");
-      if (contentInfo.refUrl) {
-        innerHTML += `</br></strong><a href="${contentInfo.refUrl}" target="_blank" style="display:flex;margin-top:15px;font-weight:bold"><div class="icon-external-link" style="margin-top:-3px" ></div>${labelTex}</a></strong>`;
-      }
-      this._contentInfo.innerHTML = innerHTML;
-    }
-  }
-
-  public hideContentInfo() {
-    this._contentInfo.className = "hiden";
-  }
-
   public playNewAudioById(newAudioId: string, isGeneralAudio = false) {
-    if (this._isFirstLoad) this.initRoomAudio();
+    this.initRoomAudio();
     this._audioControl?.playNewAudioById(newAudioId, isGeneralAudio);
   }
-
   public initRoomAudio() {
+    if(this._audioControl?.generalAudio) return
     const generalAudioId =
       GalleryScene.instance.galleryData?.room?.generalAudioId;
-    if (generalAudioId && this._isFirstLoad) {
+    if (generalAudioId) {
       this._audioControl?.playNewAudioById(generalAudioId, true);
-      this._isFirstLoad = false;
+    }
+    const wallAudio =
+      GalleryScene.instance.galleryData?.room?.walls[this._activeWallIndex]
+        .audioId;
+    if (wallAudio) {
+      this._audioControl?.playNewAudioById(wallAudio);
     }
   }
 

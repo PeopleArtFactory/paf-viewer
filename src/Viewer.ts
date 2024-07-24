@@ -10,13 +10,13 @@ import {
 import GalleryScene from "./Scene";
 import Controls from "./Controls";
 import VideoPlayer from "./controls/VideoPlayer";
+import Scene from "./Scene";
 
-let VIEWER_HIGHT = 175;
 let POINTER_SLOW_SPEED_RANGE = 100;
 let POINTER_SLOW_SPEED_CORRECTION_FACTOR = 0.5;
 let POINTER_FAST_SPEED_CORRECTION_FACTOR = 10;
-let POINTER_ROTATION_RANGE = 30;
-let POINTER_ROTATION_CORRECTION_FACTOR = 100;
+let POINTER_ROTATION_RANGE = 80;
+let POINTER_ROTATION_CORRECTION_FACTOR = 50;
 let KEYS_ARROWS_SPEED = 10;
 let WHEEL_RANGE = 90;
 let WHEEL_CORRECTION_FACTOR = 15;
@@ -25,12 +25,10 @@ let THETA_FACTOR = 20;
 let TRANSLATION_SPEED = 30;
 let FAST_TRANSLATION_SPEED = 60;
 let FAST_TRANSLATION_RANGE = 500;
-let ZOOM_SPEED = 1.5;
-let PHI_SPEED = 0.8;
-let THETA_SPEED = 0.4;
+let PHI_SPEED = 0.9;
+let THETA_SPEED = 0.5;
 let COLLISION_DISTANCE = 20;
-let MIN_END_DISTANCE = 30;
-let MAX_END_DISTANCE = 250;
+let CONTENT_DISTANCE = 250;
 
 interface Pointer {
   id: number;
@@ -147,7 +145,6 @@ class InputController {
     )[0];
     if (!activePointer) return;
     const deltaPointerPosition = new Vector2();
-
     if (activePointer.isJostick) {
       deltaPointerPosition.set(
         activePointer.initPosition.x - e.pageX,
@@ -169,9 +166,10 @@ class InputController {
         e.pageX - activePointer.initPosition.x,
         e.pageY - activePointer.initPosition.y
       );
-      if (deltaPointerPosition.length() > POINTER_ROTATION_RANGE)
+      const windowInnerWidth = Scene.instance.windowInnerWidth;
+      if (deltaPointerPosition.length() > POINTER_ROTATION_RANGE*windowInnerWidth/1920)
         deltaPointerPosition.divideScalar(
-          deltaPointerPosition.length() / POINTER_ROTATION_CORRECTION_FACTOR
+          deltaPointerPosition.length() / (POINTER_ROTATION_CORRECTION_FACTOR *windowInnerWidth/1920)
         );
       this._inputState.deltaViewerRotation = deltaPointerPosition;
     }
@@ -260,7 +258,6 @@ class Viewer {
         eval(`${key} = ${value};`);
       } catch (e) {}
     }
-    MIN_END_DISTANCE = MIN_END_DISTANCE < 10 ? 10 : MIN_END_DISTANCE;
   }
 
   constructor(position: Vector3, phi = 0, theta = -Math.PI / THETA_FACTOR) {
@@ -285,19 +282,7 @@ class Viewer {
     const q = new Quaternion();
     q.setFromAxisAngle(new Vector3(0, 1, 0), this._phi);
     let deltaForward: Vector3;
-    if (this.controls.isZoomActive) {
-      deltaForward = new Vector3(0, 1, 0);
-      forwardDirection =
-        Math.abs(forwardDirection) < ZOOM_SPEED
-          ? forwardDirection
-          : ZOOM_SPEED * Math.sign(forwardDirection);
-      lateralDirection =
-        Math.abs(lateralDirection) < ZOOM_SPEED
-          ? lateralDirection
-          : ZOOM_SPEED * Math.sign(lateralDirection);
-    } else {
-      deltaForward = new Vector3(0, 0, -1);
-    }
+    deltaForward = new Vector3(0, 0, -1);
     deltaForward.applyQuaternion(q);
     deltaForward.multiplyScalar(forwardDirection * deltaT * TRANSLATION_SPEED);
 
@@ -361,16 +346,24 @@ class Viewer {
 
   private _updateRayIntersections() {
     if (GalleryScene.instance.isModalOpen) return;
-    const mousePointer = this._input.state.pointerPosition;
-    if (!mousePointer) return;
     const raycaster = new Raycaster();
-    raycaster.setFromCamera(mousePointer, this._camera);
+    let mousePointer = this._input.state.pointerPosition;
+    if (!mousePointer) {
+      raycaster.setFromCamera(new Vector2(), this._camera);
+    } else {
+      raycaster.setFromCamera(mousePointer, this._camera);
+    }
     const intersections = raycaster.intersectObjects(
       GalleryScene.instance.children,
       true
     );
-    //case when is video player
-    if (intersections[0].object.userData.type === "video-player") {
+    if (!intersections.length) return;
+
+    //case1: Video content
+    if (
+      mousePointer &&
+      intersections[0].object.userData.type === "video-player"
+    ) {
       const resourceId = intersections[0].object.userData.id;
       const playerData = GalleryScene.instance.galleryData?.allResources.filter(
         (r) => r.id === resourceId
@@ -378,14 +371,24 @@ class Viewer {
       if (playerData) new VideoPlayer(playerData);
       return;
     }
-    //case when is video image contente
+    //case2: Image content
     if (intersections[0].object.userData.type === "content") {
-      this.moveToObject3D(intersections[0].object);
-      return;
-    }
-    const contentInfoDiv = document.getElementById("content-info-div");
-    if (contentInfoDiv) {
-      contentInfoDiv.className = "hiden";
+      if (mousePointer) {
+        this.moveToObject3D(intersections[0].object);
+      } else {
+        const contentPosition = new Vector3();
+        intersections[0].object.getWorldPosition(contentPosition);
+        if (
+          contentPosition.distanceTo(this._position) <
+          CONTENT_DISTANCE + 10
+        ) {
+          const contentId = intersections[0].object.userData.id;
+          const wallIndex = intersections[0].object.userData.wallIndex;
+          this._controls.setActiveContent(contentId, wallIndex);
+        } else {
+          this._controls.hideContentInfo();
+        }
+      }
     }
   }
 
@@ -396,19 +399,15 @@ class Viewer {
     const objType = target.userData.type;
     const wall = GalleryScene.instance.galleryData?.room?.walls[wallIndex];
     if (!wall) return;
-    const wallAudioId = wall.audioId;
+
     let wallAngle = wall.angle;
-    const endPoint = new Vector3()
+    const endPoint = new Vector3();
     //Active lights shadow before viewer arrive to the wall
     this._controls.castShadowWallLights(wallIndex);
 
     //Reset input state to avoid click side-effect
     this._input.reset();
-    let endDistanceToObject = MIN_END_DISTANCE;
-    if (!this.controls.isZoomActive) {
-      endDistanceToObject = MAX_END_DISTANCE;
-      this._position.y = VIEWER_HIGHT;
-    }
+    let endDistanceToObject = CONTENT_DISTANCE;
     target.getWorldPosition(endPoint);
     if (objType === "wall") {
       endPoint.x += (wall.size[0] / 2) * Math.cos(wallAngle);
@@ -451,10 +450,8 @@ class Viewer {
         );
         if (colliders.length == 0) requestAnimationFrame(step);
       } else {
-        if (wallAudioId) this._controls.playNewAudioById(wallAudioId);
         const contentId = target.userData.id;
-        this._controls.setActiveWallIndex(wallIndex);
-        if (contentId) this._controls.showContentInfo(contentId);
+        this._controls.setActiveContent(contentId, wallIndex);
       }
     };
     step();

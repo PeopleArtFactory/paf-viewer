@@ -20,8 +20,7 @@ interface Settings {
     ZOOM_SPEED?: number;
     PHI_SPEED?: number;
     THETA_SPEED?: number;
-    MIN_END_DISTANCE?: number;
-    MAX_END_DISTANCE?: number;
+    CONTENT_DISTANCE?: number;
     VIEWER_HIGHT?: number;
     INITIAL_POSITION?: [number, number, number];
     START_MODAL?: "none" | "navigation-info" | "brochure";
@@ -37,9 +36,10 @@ export default class GalleryScene {
     private _settings;
     private _entities;
     private _clock;
-    private _maxWallDistance;
-    private _minWallDistance;
+    private _maxWallPosition;
+    private _minWallPosition;
     private _maxWallHight;
+    private _windowInnerWidth;
     isModalOpen: boolean;
     private constructor();
     private _resize;
@@ -54,5 +54,6 @@ export default class GalleryScene {
     get children(): import('three').Object3D<import('three').Object3DEventMap>[];
     get entities(): AbstractEntity[];
     get viewer(): Viewer | null;
+    get windowInnerWidth(): number;
 }
 export {};

@@ -1,3 +1,5 @@
+import { Audio } from 'three';
+
 declare class AudioControl {
     private _isPlayingAudio;
     private _generalAudio;
@@ -7,5 +9,6 @@ declare class AudioControl {
     constructor(controlsBar: HTMLElement);
     playNewAudioById(newAudioId: string, isGeneralAudio?: boolean): void;
     toggleAudio(audioControlButtom: HTMLDivElement): void;
+    get generalAudio(): Audio<GainNode> | null;
 }
 export default AudioControl;

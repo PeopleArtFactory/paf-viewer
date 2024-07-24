@@ -20,8 +20,8 @@ export default class NavigationInfoModal {
         <p><strong>${t('Change wall')}: </strong>${t(
 					'Use the arrow buttons or the spacebar'
 				)}.</p>
-		<p><strong>${t('Zoom Mode')}: </strong>${t(
-					'Activate it pressing the binoculars icon. Move using virtual joystick or arrows keys. You cannot change the wall until switch it off'
+		<p><strong>${t('Activate Zoom Mode')}: </strong>${t(
+					'Click on the zoom icon that appears when you are approaching to a content'
 				)}.</p>`;
 
 		this._modal.body.innerHTML = innerHTML;
