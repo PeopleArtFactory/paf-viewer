@@ -1,5 +1,4 @@
 declare const _default: {
-	"Close": "Cerrar",
 	"Share gallery": "Compartir galería",
 	"Options": "Opciones",
 	"Open Link": "Abrir enlace",
@@ -15,7 +14,7 @@ declare const _default: {
 	"Use the virtual joystick, mouse wheel or vertical arrows keys":"Usa el joystick virtual, la rueda del ratón o las flechas verticales",
 	"Lateral movements":"Movimientos laterales",
 	"Use the virtual joystick or the horizontal arrows keys":"Usa el joystick virtual o las flechas horizontales",
-	"Change wall":"Cambiar de pared",
+	"Move to next content":"Moverte al siguiente contenido",
 	"Use the arrow buttons or the spacebar":"Usa los botones de flechas o la barra espaciadora",
 	"Activate Zoom Mode":"Activar Modo zoom",
 	"Click on the zoom icon that appears when you are approaching to a content":"Haz clic en el icono de zoom que aparece cuando te acercas a un contenido"

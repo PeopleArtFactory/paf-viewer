@@ -6,6 +6,7 @@ export default class Menu {
     private _isHightPerformance;
     private _navigationInfoModal;
     private _brochureModal;
+    private _isOpen;
     constructor(controlsBar: HTMLElement);
     get isPlacardActived(): boolean;
     setHightPerformance(value: boolean): void;
