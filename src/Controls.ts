@@ -44,7 +44,7 @@ export default class Controls {
   constructor() {
     const contentInfoDiv = document.createElement("div");
     contentInfoDiv.id = "content-info-div";
-    contentInfoDiv.className = "hiden";
+    contentInfoDiv.className = "hidden";
     document.body.appendChild(contentInfoDiv);
     this._contentInfo = contentInfoDiv;
     const controlsPanel = document.getElementById("controls-panel");
@@ -99,7 +99,7 @@ export default class Controls {
     const imageViewer = new ImageViewer();
     const controlZoom = document.createElement("div");
     controlZoom.id = "control-zoom";
-    controlZoom.className = "hiden";
+    controlZoom.className = "hidden";
     controlsPanel?.appendChild(controlZoom);
     this._zoomButtom = controlZoom;
     controlZoom.addEventListener(
@@ -143,16 +143,16 @@ export default class Controls {
   }
 
   public showContentInfo(contentId: string) {
-    if (!this._menuOptions.isPlacardActived) return;
     const content = GalleryScene.instance.galleryData?.allResources?.filter(
       (item) => item.id === contentId
     )[0];
     if (!content) return;
     this._activeContentId = contentId;
+    this._zoomButtom.classList.remove("hidden");
+    if (!this._menuOptions.isPlacardActived) return;
     const contentInfo = content.info;
     if (contentInfo && !content.disabled) {
-      this._contentInfo.classList.remove("hiden");
-      this._zoomButtom.classList.remove("hiden");
+      this._contentInfo.classList.remove("hidden");
       let innerHTML = `<strong>${contentInfo.name}</strong>`;
       innerHTML += contentInfo.description
         ? `<p>${contentInfo.description}</p>`
@@ -183,8 +183,8 @@ export default class Controls {
     }
   }
   public hideContentInfo() {
-    this._contentInfo.className = "hiden";
-    this._zoomButtom.className = "hiden";
+    this._contentInfo.className = "hidden";
+    this._zoomButtom.className = "hidden";
   }
   private _moveToNextWall(directionSign = 1) {
     const maxWallIndex = this._wallsObj3D.length - 1;
@@ -298,7 +298,7 @@ export default class Controls {
     this._audioControl?.playNewAudioById(newAudioId, isGeneralAudio);
   }
   public initRoomAudio() {
-    if(this._audioControl?.generalAudio) return
+    if (this._audioControl?.generalAudio) return;
     const generalAudioId =
       GalleryScene.instance.galleryData?.room?.generalAudioId;
     if (generalAudioId) {

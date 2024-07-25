@@ -17,7 +17,7 @@ export default class NavigationInfoModal {
 					'Use the virtual joystick, mouse wheel or vertical arrows keys'
 				)}.</p>
         <p><strong>${t('Lateral movements')}: </strong>${t('Use the virtual joystick or the horizontal arrows keys')}.</p>
-        <p><strong>${t('Change wall')}: </strong>${t(
+        <p><strong>${t('Move to next content')}: </strong>${t(
 					'Use the arrow buttons or the spacebar'
 				)}.</p>
 		<p><strong>${t('Activate Zoom Mode')}: </strong>${t(

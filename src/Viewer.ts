@@ -28,7 +28,7 @@ let FAST_TRANSLATION_RANGE = 500;
 let PHI_SPEED = 0.9;
 let THETA_SPEED = 0.5;
 let COLLISION_DISTANCE = 20;
-let CONTENT_DISTANCE = 250;
+let CONTENT_DISTANCE = 300;
 
 interface Pointer {
   id: number;
@@ -167,9 +167,13 @@ class InputController {
         e.pageY - activePointer.initPosition.y
       );
       const windowInnerWidth = Scene.instance.windowInnerWidth;
-      if (deltaPointerPosition.length() > POINTER_ROTATION_RANGE*windowInnerWidth/1920)
+      if (
+        deltaPointerPosition.length() >
+        (POINTER_ROTATION_RANGE * windowInnerWidth) / 1920
+      )
         deltaPointerPosition.divideScalar(
-          deltaPointerPosition.length() / (POINTER_ROTATION_CORRECTION_FACTOR *windowInnerWidth/1920)
+          deltaPointerPosition.length() /
+            ((POINTER_ROTATION_CORRECTION_FACTOR * windowInnerWidth) / 1920)
         );
       this._inputState.deltaViewerRotation = deltaPointerPosition;
     }

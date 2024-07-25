@@ -10,25 +10,27 @@ export default class Menu {
     GalleryScene.instance.settings?.HIGH_PERFORMANCE;
   private _navigationInfoModal: NavigationInfoModal;
   private _brochureModal: BrochureModal;
+  private _isOpen = false;
   constructor(controlsBar: HTMLElement) {
     this._brochureModal = new BrochureModal();
     this._navigationInfoModal = new NavigationInfoModal();
     const menuPanel = document.createElement("div");
     menuPanel.id = "menu-panel";
-    menuPanel.className = "hiden";
+    menuPanel.className = "outer";
     document.body.appendChild(menuPanel);
     menuPanel.innerHTML = `<strong><h1>Menu</h1></strong>`;
 
-    const closeButtom = document.createElement('div');
-		closeButtom.innerHTML = `<span class="modal-close"></span>`;
-		menuPanel.appendChild(closeButtom);
-		closeButtom.addEventListener(
-			'click',
-			() => {
-        menuPanel.className = "hiden";
-			},
-			false
-		);
+    const closeButtom = document.createElement("div");
+    closeButtom.innerHTML = `<span class="modal-close"></span>`;
+    menuPanel.appendChild(closeButtom);
+    closeButtom.addEventListener(
+      "click",
+      () => {
+        menuPanel.classList.add("outer");
+        this._isOpen = !this._isOpen;
+      },
+      false
+    );
 
     const menuLink1 = document.createElement("div");
     menuLink1.className = "menu-link";
@@ -57,7 +59,9 @@ export default class Menu {
     const menuLink3 = document.createElement("div");
     menuLink3.className = "menu-link";
     menuPanel.appendChild(menuLink3);
-    menuLink3.innerHTML = `<div class="switch  checked"></div>${t("Show placard")}`;
+    menuLink3.innerHTML = `<div class="switch  checked"></div>${t(
+      "Show placard"
+    )}`;
     menuLink3.addEventListener(
       "click",
       () => {
@@ -112,7 +116,12 @@ export default class Menu {
     controlButtom.addEventListener(
       "click",
       () => {
-        menuPanel.classList.remove("hiden");
+        if (this._isOpen) {
+          menuPanel.classList.add("outer");
+        } else {
+          menuPanel.classList.remove("outer");
+        }
+        this._isOpen = !this._isOpen;
       },
       false
     );

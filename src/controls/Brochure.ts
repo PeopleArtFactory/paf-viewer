@@ -12,9 +12,7 @@ export default class BrochureModal {
 		this._modal.header.appendChild(modalTitle);
 		let innerHTML = `
         <div id='brochure-body'>
-		<div>	
-        	<img src='${avatarUrl}'/>
-		</div>
+        <img src='${avatarUrl}'/>
 		<div>	
 			<p><strong>${galleryData.synopsis}</strong></p>
        		<p>${galleryData.description}</p>
