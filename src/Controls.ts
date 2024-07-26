@@ -187,6 +187,7 @@ export default class Controls {
     this._zoomButtom.className = "hidden";
   }
   private _moveToNextWall(directionSign = 1) {
+    this.hideContentInfo();
     const maxWallIndex = this._wallsObj3D.length - 1;
     let nextWallIndex = this._activeWallIndex + directionSign;
     nextWallIndex = nextWallIndex < 0 ? maxWallIndex : nextWallIndex;

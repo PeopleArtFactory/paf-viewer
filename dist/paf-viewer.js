@@ -17013,6 +17013,7 @@ class Controls {
   }
   _moveToNextWall(e = 1) {
     var l, c, h, u;
+    this.hideContentInfo();
     const n = this._wallsObj3D.length - 1;
     let i = this._activeWallIndex + e;
     i = i < 0 ? n : i, i = i > n ? 0 : i;
@@ -17103,7 +17104,7 @@ class VideoPlayer {
     };
   }
 }
-let POINTER_SLOW_SPEED_RANGE = 100, POINTER_SLOW_SPEED_CORRECTION_FACTOR = 0.5, POINTER_FAST_SPEED_CORRECTION_FACTOR = 10, POINTER_ROTATION_RANGE = 80, POINTER_ROTATION_CORRECTION_FACTOR = 50, KEYS_ARROWS_SPEED = 10, WHEEL_RANGE = 90, WHEEL_CORRECTION_FACTOR = 15, THETA_FACTOR = 20, TRANSLATION_SPEED = 30, FAST_TRANSLATION_SPEED = 60, FAST_TRANSLATION_RANGE = 500, PHI_SPEED = 0.9, THETA_SPEED = 0.5, COLLISION_DISTANCE = 20, CONTENT_DISTANCE = 300;
+let POINTER_SLOW_SPEED_RANGE = 50, POINTER_SLOW_SPEED_CORRECTION_FACTOR = 0.5, POINTER_FAST_SPEED_CORRECTION_FACTOR = 10, POINTER_ROTATION_RANGE = 80, POINTER_ROTATION_CORRECTION_FACTOR = 50, KEYS_ARROWS_SPEED = 10, WHEEL_RANGE = 90, WHEEL_CORRECTION_FACTOR = 15, THETA_FACTOR = 20, TRANSLATION_SPEED = 30, FAST_TRANSLATION_SPEED = 60, FAST_TRANSLATION_RANGE = 500, PHI_SPEED = 0.9, THETA_SPEED = 0.5, COLLISION_DISTANCE = 50, CONTENT_DISTANCE = 250;
 function clamp(r, e, n) {
   return Math.min(Math.max(r, e), n);
 }
@@ -17268,7 +17269,7 @@ class Viewer {
     Q(this, "_theta");
     Q(this, "_controls");
     Q(this, "update", (r) => {
-      this._updatePosition(r), this._updateRotation(), this._updateRayIntersections(), this._updateCamera(), this._input.reset();
+      this._updatePosition(r), this._updateRotation(), this._updateCamera(), this._input.reset();
     });
     this._position = r, this._camera = GalleryScene.instance.camera, this._input = new InputController(), this._rotation = new Quaternion(), this._phi = e, this._theta = n, this._controls = new Controls();
   }
@@ -17282,7 +17283,7 @@ class Viewer {
   _updatePosition(r) {
     if (GalleryScene.instance.isModalOpen) return;
     const e = this._input.state;
-    e.deltaViewerPosition.length() > 1 && this._controls.hideContentInfo();
+    (e.deltaViewerPosition.length() > 0 || e.pointerPosition) && this._updateRayIntersections();
     let i = e.deltaViewerPosition.x, s = e.deltaViewerPosition.y;
     const a = new Quaternion();
     a.setFromAxisAngle(new Vector3(0, 1, 0), this._phi);
@@ -17303,7 +17304,7 @@ class Viewer {
   _updateRotation() {
     if (GalleryScene.instance.isModalOpen) return;
     const r = this._input.state;
-    r.deltaViewerRotation.length() > 10 && this._controls.hideContentInfo();
+    r.deltaViewerRotation.length() > 0 && this._updateRayIntersections();
     const n = -r.deltaViewerRotation.x / window.innerWidth, i = -r.deltaViewerRotation.y / window.innerHeight;
     this._phi += -n * PHI_SPEED, this._theta = clamp(
       this._theta + -i * THETA_SPEED,
@@ -17323,6 +17324,7 @@ class Viewer {
   _updateRayIntersections() {
     var i;
     if (GalleryScene.instance.isModalOpen) return;
+    this._controls.hideContentInfo();
     const r = new Raycaster();
     let e = this._input.state.pointerPosition;
     e ? r.setFromCamera(e, this._camera) : r.setFromCamera(new Vector2(), this._camera);
@@ -17346,8 +17348,7 @@ class Viewer {
           if (n[0].object.getWorldPosition(s), s.distanceTo(this._position) < CONTENT_DISTANCE + 10) {
             const a = n[0].object.userData.id, o = n[0].object.userData.wallIndex;
             this._controls.setActiveContent(a, o);
-          } else
-            this._controls.hideContentInfo();
+          }
         }
     }
   }
@@ -17365,20 +17366,19 @@ class Viewer {
     Math.abs(s - this._phi) > Math.PI && (s -= Math.PI * 2);
     const u = performance.now(), d = this._phi, f = this._theta, p = this._position.clone(), g = () => {
       const m = performance.now(), A = Math.min(Math.sqrt((m - u) / h), 1);
-      if (this._phi = d * (1 - A) + s * A, this._theta = f * (1 - A) + -Math.PI / 20 * A, this._position.x = p.x * (1 - A) + (a.x + o * Math.sin(s)) * A, this._position.z = p.z * (1 - A) + (a.z + o * Math.cos(s)) * A, A < 1) {
-        const S = this._position.clone(), E = new Sphere(
-          S,
-          COLLISION_DISTANCE / 2
-        );
+      this._phi = d * (1 - A) + s * A, this._theta = f * (1 - A) + -Math.PI / 20 * A;
+      const S = new Vector3();
+      if (S.x = p.x * (1 - A) + (a.x + o * Math.sin(s)) * A, S.y = this._position.y, S.z = p.z * (1 - A) + (a.z + o * Math.cos(s)) * A, A < 1) {
+        const E = new Sphere(S, COLLISION_DISTANCE / 10);
         GalleryScene.instance.entities.filter(
           (w) => {
             var C;
             return (C = w.collider) == null ? void 0 : C.intersectsSphere(E);
           }
-        ).length == 0 && requestAnimationFrame(g);
+        ).length == 0 ? (this._position.copy(S), requestAnimationFrame(g)) : (this._position.copy(p), this._theta = f, this._phi = d);
       } else {
-        const S = r.userData.id;
-        this._controls.setActiveContent(S, e);
+        const E = r.userData.id;
+        this._controls.setActiveContent(E, e);
       }
     };
     g();

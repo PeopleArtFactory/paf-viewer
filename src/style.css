@@ -1,10 +1,10 @@
 :root {
-  --color-primary: #20ffbc;
-  --color-black: #1b1a1a;
-  --background-black: #000000ad;
-  --background-white: #e0e0e0;
-  --background-glass: rgba(255, 255, 255, 0.25);
-  --background-white-alpha: rgba(255, 255, 255, 0.75);
+  --primary: #20ffbc;
+  --black: #1b1a1a;
+  --bg-black: #000000ad;
+  --bg-white: #e0e0e0;
+  --bg-glass: rgba(255, 255, 255, 0.25);
+  --bg-white-alpha: rgba(255, 255, 255, 0.75);
   --shadow-glass: 0 0 16px rgba(255, 255, 255, 0.1);
 }
 html{
@@ -31,21 +31,23 @@ body {
 #controls-panel {
   position: absolute;
   z-index: 10;
-  bottom: 16px;
+  bottom: 40px;
+  right: 40px;
   display: grid;
   place-items: center;
   place-self: center;
-  width: 240px;
+  width: 248px;
   height: 200px;
-  margin: auto;
+  margin: 0;
   padding: 8px;
-  background: var(--background-glass);
+  background: var(--bg-glass);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  border: 1px var(--background-glass) solid;
+  border: 1px var(--bg-glass) solid;
   border-radius: 16px;
   box-shadow: var(--shadow-glass);
   touch-action: none;
+  box-sizing: content-box;
 }
 #walk-control {
   position: relative;
@@ -55,8 +57,8 @@ body {
   place-items: center;
   width: 152px;
   height: 152px;
-  background: var(--background-glass);
-  border: 1px var(--background-glass) solid;
+  background: var(--bg-glass);
+  border: 1px var(--bg-glass) solid;
   border-radius: 50%;
   box-shadow: var(--shadow-glass);
   touch-action: none;
@@ -66,8 +68,8 @@ body {
   z-index: 25;
   width: 16px;
   height: 16px;
-  background: var(--color-primary);
-  border: 1px var(--background-black) solid;
+  background: var(--primary);
+  border: 1px var(--bg-black) solid;
   border-radius: 50%;
   box-shadow: var(--shadow-glass);
   touch-action: none;
@@ -79,11 +81,12 @@ body {
   height: 24px;
   width: 24px;
   margin: 0;
-  border: 8px var(--color-primary) solid;
-  background: var(--color-primary);
+  border: 8px var(--primary) solid;
+  background: var(--primary);
   border-radius: 50%;
   background-repeat: no-repeat;
   background-size: contain;
+  box-sizing: content-box;
 }
 .control-buttom:hover {
   height: 32px;
@@ -96,12 +99,13 @@ body {
   background-image: url("./icons/scan-search.svg");
   z-index: 25;
   top: 4px;
-  background-color: var(--color-primary);
-  border: 8px var(--color-primary) solid;
+  background-color: var(--primary);
+  border: 8px var(--primary) solid;
   border-radius: 100%;
   background-repeat: no-repeat;
   background-size: contain;
-  box-shadow: var(--background-black) 0px 3px 0px;
+  box-shadow: var(--bg-black) 0px 3px 0px;
+  box-sizing: content-box;
 }
 #control-zoom:hover {
   width: 40px;
@@ -110,12 +114,12 @@ body {
 #control-buttom-left {
   left: 24px;
   background-image: url("./icons/chevrons-left.svg");
-  box-shadow: var(--background-black) 2px 3px 0px;
+  box-shadow: var(--bg-black) 2px 3px 0px;
 }
 #control-buttom-right {
   right: 24px;
   background-image: url("./icons/chevrons-right.svg");
-  box-shadow: var(--background-black) -2px 3px 0px;
+  box-shadow: var(--bg-black) -2px 3px 0px;
 }
 #active-wall-label {
   position: relative;
@@ -127,10 +131,11 @@ body {
   text-align: center;
 }
 #gallery-controls-bar {
-  position: relative;
-  top: -40px;
+  position: absolute;
+  bottom: 4px;
+  margin: 0 auto;
   display: inline-flex;
-  width: 100%;
+  width: 240px;
   align-items: center;
   justify-content: space-between;
   touch-action: none;
@@ -151,6 +156,7 @@ body {
 /* CONTENT INFO  */
 #content-info-div {
   position: absolute;
+  top: 0;
   z-index: 10;
   max-width: 360px;
   height: fit-content;
@@ -158,12 +164,12 @@ body {
   max-height: 50%;
   margin: 24px;
   padding: 24px;
-  background: var(--background-white-alpha);
+  background: var(--bg-white-alpha);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px var(--background-glass) solid;
+  border: 1px var(--bg-glass) solid;
   border-radius: 8px;
-  box-shadow: var(--background-black) 8px 8px 0px;
+  box-shadow: var(--bg-black) 8px 8px 0px;
   font-size: small;
 }
 #content-info-div:hover {
@@ -176,25 +182,29 @@ body {
   right: 0px;
   display: grid;
   margin: 16px;
-  padding: 16px;
-  background: var(--background-white-alpha);
+  padding: 24px;
+  background: var(--bg-white-alpha);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px var(--background-glass) solid;
+  border: 1px var(--bg-glass) solid;
   border-radius: 8px;
-  box-shadow: var(--background-black) 8px 8px 0px;
+  box-shadow: var(--bg-black) 8px 8px 0px;
   transform: translateX(0%);
   transition: 0.4s ease;
 }
-
 #menu-panel.outer {
-  transform: translateX(120%);
+  transform: translateX(120%) scale(0);
   transition: 0.4s ease;
+}
+#menu-panel h1 {
+  font-size: xx-large;
+  font-weight: bold;
 }
 .menu-link {
   display: inline-flex;
   place-items: center;
-  height: 32px;
+  height: 40px;
+  font-weight: bold;
   cursor: pointer;
 }
 .menu-link:hover {
@@ -205,11 +215,11 @@ body {
   display: inline-block;
   width: 40px;
   height: 16px;
-  background-color: var(--background-black);
+  background-color: var(--bg-black);
   border-radius: 16px;
   transition: all 0.3s;
   margin-right: 10px;
-  border: var(--background-black) solid 1px;
+  border: var(--bg-black) solid 1px;
 }
 .switch::after {
   content: "";
@@ -219,15 +229,15 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: var(--background-white);
+  background-color: var(--bg-white);
   transition: all 0.3s;
-  border: var(--background-black) solid 1px;
+  border: var(--bg-black) solid 1px;
 }
 .checked.switch::after {
   left: 24px;
 }
 .checked.switch {
-  background-color: var(--color-primary);
+  background-color: var(--primary);
 }
 
 /* MODAL */
@@ -243,7 +253,7 @@ body {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: var(--background-glass);
+  background: var(--bg-glass);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
@@ -252,15 +262,15 @@ body {
   min-width: 260px;
   width: 75%;
   padding: 32px;
-  background: var(--background-white-alpha);
-  border: 1px var(--background-glass) solid;
+  background: var(--bg-white-alpha);
+  border: 1px var(--bg-glass) solid;
   border-radius: 8px;
   box-shadow: var(--shadow-glass);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  box-shadow: var(--background-black) 8px 8px 0px;
+  box-shadow: var(--bg-black) 8px 8px 0px;
   text-align: justify;
-  color: var(--color-black) !important;
+  color: var(--black) !important;
   overflow-x: hidden;
   overflow-y:scroll
 }
@@ -279,12 +289,13 @@ body {
   height: 24px;
   padding: 16px;
   overflow: hidden;
-  background: var(--color-primary);
+  background: var(--primary);
   border-radius: 100%;
   text-align: center;
   transition: all 0.2s ease;
   cursor: pointer;
-  box-shadow: var(--background-black) -3px 3px 0px;
+  box-shadow: var(--bg-black) -3px 3px 0px;
+  box-sizing: content-box;
 }
 .modal-close:hover {
   transform: rotate(90deg);
@@ -292,7 +303,7 @@ body {
 }
 .modal-close:after,
 .modal-close:before {
-  background: var(--background-black);
+  background: var(--bg-black);
   content: "";
   height: 4px;
   left: 50%;
@@ -308,15 +319,16 @@ body {
 }
 /* IMAGE VIEWER */
 .iv-fullscreen-close {
-  background: var(--color-primary);
+  background: var(--primary);
   border-radius: 100%;
   top: 16px;
   right: 16px;
-  box-shadow: var(--background-black) -3px 3px 0px;
+  box-shadow: var(--bg-black) -3px 3px 0px;
+  box-sizing: content-box;
 }
 .iv-fullscreen-close:after,
 .iv-fullscreen-close:before {
-  background: var(--background-black) !important;
+  background: var(--bg-black) !important;
 }
 /* BROCHURE */
 #brochure-body {
@@ -334,10 +346,10 @@ body {
   margin-right: 16px;
   padding: 4px 16px;
   border-radius: 8px;
-  color: var(--color-black);
-  background-color: var(--color-primary);
+  color: var(--black);
+  background-color: var(--primary);
   font-weight: bold;
-  box-shadow: var(--background-black) -3px 3px 0px;
+  box-shadow: var(--bg-black) -3px 3px 0px;
 }
 
 /* SCROLLBAR */
@@ -355,10 +367,14 @@ body {
   background-color: #909090;
 }
 /* MEDIA */
-@media (min-width: 1025px) {
+
+@media (min-width: 630px) {
   #content-info-div {
-    bottom: 16px;
+    top:auto;
+    bottom: 16px ;
   }
+}
+@media (min-width: 1025px) {
   #brochure-body {
     display: inline-flex;
   }
@@ -381,14 +397,15 @@ div[class^="icon-"] {
   background-position: center;
   cursor: pointer;
   border: 0px;
+  box-sizing: content-box;
 }
 
 div[class^="icon-"]:hover {
   margin: 0px;
   padding: 8px;
   background-size: 28px;
-  background-color: var(--color-primary);
-  box-shadow: var(--background-black) 0px 3px 0px;
+  background-color: var(--primary);
+  box-shadow: var(--bg-black) 0px 3px 0px;
   border-radius: 100%;
 }
 .icon-menu {

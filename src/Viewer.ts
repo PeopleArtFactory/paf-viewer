@@ -12,7 +12,7 @@ import Controls from "./Controls";
 import VideoPlayer from "./controls/VideoPlayer";
 import Scene from "./Scene";
 
-let POINTER_SLOW_SPEED_RANGE = 100;
+let POINTER_SLOW_SPEED_RANGE = 50;
 let POINTER_SLOW_SPEED_CORRECTION_FACTOR = 0.5;
 let POINTER_FAST_SPEED_CORRECTION_FACTOR = 10;
 let POINTER_ROTATION_RANGE = 80;
@@ -27,8 +27,8 @@ let FAST_TRANSLATION_SPEED = 60;
 let FAST_TRANSLATION_RANGE = 500;
 let PHI_SPEED = 0.9;
 let THETA_SPEED = 0.5;
-let COLLISION_DISTANCE = 20;
-let CONTENT_DISTANCE = 300;
+let COLLISION_DISTANCE = 50;
+let CONTENT_DISTANCE = 250;
 
 interface Pointer {
   id: number;
@@ -56,7 +56,6 @@ class InputController {
       deltaViewerPosition: new Vector2(),
       pointerPosition: null,
     };
-
     const sceneDiv = document.getElementById("gallery-scene");
     sceneDiv?.addEventListener("pointerdown", (e: PointerEvent) =>
       this._onPointerDown(e)
@@ -69,7 +68,6 @@ class InputController {
       (e: PointerEvent) => this._onPointerMove(e),
       false
     );
-
     const controlsPanel = document.createElement("div");
     controlsPanel.id = "controls-panel";
     document.body.appendChild(controlsPanel);
@@ -84,7 +82,6 @@ class InputController {
       (e: PointerEvent) => this._onPointerMove(e),
       false
     );
-
     const walkControl = document.createElement("div");
     walkControl.id = "walk-control";
     controlsPanel.appendChild(walkControl);
@@ -97,7 +94,6 @@ class InputController {
     walkControl.addEventListener("pointermove", (e: PointerEvent) =>
       this._onPointerMove(e)
     );
-
     window.addEventListener("keydown", (e: KeyboardEvent) =>
       this._onKeyDown(e)
     );
@@ -277,10 +273,8 @@ class Viewer {
   private _updatePosition(deltaT: number) {
     if (GalleryScene.instance.isModalOpen) return;
     const inputState = this._input.state;
-
     const deltaViewerPositionLength = inputState.deltaViewerPosition.length();
-    if (deltaViewerPositionLength > 1) this._controls.hideContentInfo();
-
+    if (deltaViewerPositionLength > 0 || inputState.pointerPosition) this._updateRayIntersections();
     let lateralDirection = inputState.deltaViewerPosition.x;
     let forwardDirection = inputState.deltaViewerPosition.y;
     const q = new Quaternion();
@@ -311,10 +305,8 @@ class Viewer {
   private _updateRotation() {
     if (GalleryScene.instance.isModalOpen) return;
     const inputState = this._input.state;
-
     const deltaViewerRotationLength = inputState.deltaViewerRotation.length();
-    if (deltaViewerRotationLength > 10) this._controls.hideContentInfo();
-
+    if (deltaViewerRotationLength > 0) this._updateRayIntersections();
     const xh = -inputState.deltaViewerRotation.x / window.innerWidth;
     const yh = -inputState.deltaViewerRotation.y / window.innerHeight;
     this._phi += -xh * PHI_SPEED;
@@ -343,13 +335,13 @@ class Viewer {
   public update = (deltaT: number) => {
     this._updatePosition(deltaT);
     this._updateRotation();
-    this._updateRayIntersections();
     this._updateCamera();
     this._input.reset();
   };
 
   private _updateRayIntersections() {
     if (GalleryScene.instance.isModalOpen) return;
+    this._controls.hideContentInfo();
     const raycaster = new Raycaster();
     let mousePointer = this._input.state.pointerPosition;
     if (!mousePointer) {
@@ -389,9 +381,7 @@ class Viewer {
           const contentId = intersections[0].object.userData.id;
           const wallIndex = intersections[0].object.userData.wallIndex;
           this._controls.setActiveContent(contentId, wallIndex);
-        } else {
-          this._controls.hideContentInfo();
-        }
+        } 
       }
     }
   }
@@ -436,23 +426,29 @@ class Viewer {
       const delta = Math.min(Math.sqrt((now - startTime) / duration), 1);
       this._phi = startPhi * (1 - delta) + wallAngle * delta;
       this._theta = startTheta * (1 - delta) + (-Math.PI / 20) * delta;
-      this._position.x =
+      const newPosition = new Vector3();
+      newPosition.x =
         startPosition.x * (1 - delta) +
         (endPoint.x + endDistanceToObject * Math.sin(wallAngle)) * delta;
-      this._position.z =
+      newPosition.y = this._position.y;
+      newPosition.z =
         startPosition.z * (1 - delta) +
         (endPoint.z + endDistanceToObject * Math.cos(wallAngle)) * delta;
       if (delta < 1) {
         // before updating the position check if there is a collision's problem
-        const testigPosition = this._position.clone();
-        const testingSphere = new Sphere(
-          testigPosition,
-          COLLISION_DISTANCE / 2
-        );
+        const testingSphere = new Sphere(newPosition, COLLISION_DISTANCE / 10);
         const colliders = GalleryScene.instance.entities.filter((e) =>
           e.collider?.intersectsSphere(testingSphere)
         );
-        if (colliders.length == 0) requestAnimationFrame(step);
+        if (colliders.length == 0) {
+          this._position.copy(newPosition);
+          requestAnimationFrame(step);
+        } else {
+          // Return to the start position
+          this._position.copy(startPosition);
+          this._theta = startTheta;
+          this._phi = startPhi;
+        }
       } else {
         const contentId = target.userData.id;
         this._controls.setActiveContent(contentId, wallIndex);

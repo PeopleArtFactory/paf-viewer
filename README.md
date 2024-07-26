@@ -54,7 +54,7 @@ GalleryScene.instance.load(galleryDataFile, settings);
 ```javascript
 
     VIEWER_HIGHT: 175,
-    POINTER_SLOW_SPEED_RANGE: 100,
+    POINTER_SLOW_SPEED_RANGE: 50,
     POINTER_SLOW_SPEED_CORRECTION_FACTOR: 0.5,
     POINTER_FAST_SPEED_CORRECTION_FACTOR: 10,
     POINTER_ROTATION_RANGE: 30,
@@ -70,7 +70,7 @@ GalleryScene.instance.load(galleryDataFile, settings);
     ZOOM_SPEED: 1.5,
     PHI_SPEED: 0.8,
     THETA_SPEED: 0.4,
-    COLLISION_DISTANCE:20,
+    COLLISION_DISTANCE:50,
     CONTENT_DISTANCE: 250,
    
     INITIAL_POSITION: [number, number, number];
