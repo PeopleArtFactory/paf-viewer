@@ -228,7 +228,6 @@ export default class Controls {
       wallIndex++;
     });
   }
-
   public moveToNextContent(directionSign = 1) {
     this.hideContentInfo();
     //case 0: There is no active content yet.
@@ -251,7 +250,6 @@ export default class Controls {
       }
       return;
     }
-
     const restOfContentsInActiveWall = this._wallsObj3D[
       this._activeWallIndex
     ].children.filter(
@@ -312,8 +310,13 @@ export default class Controls {
       this._audioControl?.playNewAudioById(wallAudio);
     }
   }
-
   public get menu() {
     return this._menuOptions;
+  }
+  public toggleAudio() {
+    this._audioControl?.toggleAudio();
+  }
+  public isPlayingAudio(){
+    return this._audioControl?.isPlayingAudio();
   }
 }
